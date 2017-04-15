@@ -2,28 +2,26 @@ package controllers;
 
 import models.Ball;
 import models.Board;
-import models.Paddle;
+import models.Player;
 import views.GameView;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class GameController implements Runnable {
     private static final int UPDATE_RATE = 100;
+    private Thread t;
 
     // model
     private Ball ball;
     private Board board;
-    private Paddle[] paddles = new Paddle[2];
     // view
     private GameView gameView;
 
-    public GameController(int width, int height){
-        ball = new Ball(width/2,height/2,10,5,20);
-        board = new Board(0,0,width,height);
-        paddles[0] = new Paddle(25,height/2,100);
-        paddles[1] = new Paddle(width-25,height/2,100);
-        gameView = new GameView(width,height);
-        gameView.add(ball);
-        gameView.add(board);
-        gameView.add(paddles);
+    public GameController(GameView gameView){
+        this.gameView = gameView;
+        ball = gameView.getBall();
+        board = gameView.getBoard();
     }
 
     public void update(){
@@ -65,6 +63,13 @@ public class GameController implements Runnable {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public void start(){
+        if(t==null){
+            t = new Thread(this);
+            t.start();
         }
     }
 }
