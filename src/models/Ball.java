@@ -22,32 +22,6 @@ public class Ball {
     public Ball(float x, float y, float radius, float speed, float angleInDegree){
         this(x,y,radius,speed,angleInDegree,DEFAULT_COLOR);
     }
-    public void move(Board board, Paddle[] paddle){
-        float ballMinX = board.getMinX() + radius;
-        float ballMinY = board.getMinY() + radius;
-        float ballMaxX = board.getMaxX() - radius;
-        float ballMaxY = board.getMaxY() - radius;
-
-        x+=speedX;
-        y+=speedY;
-
-        if(x<ballMinX){
-            speedX = -speedX;
-            x = ballMinX;
-        } else if (x > ballMaxX) {
-            speedX = -speedX;
-            x = ballMaxX;
-        }
-
-        if (y < ballMinY) {
-            speedY = -speedY;
-            y = ballMinY;
-        } else if (y > ballMaxY) {
-            speedY = -speedY;
-            y = ballMaxY;
-        }
-
-    }
     public float getSpeed(){
         return (float)Math.sqrt(Math.pow(speedX,2)*Math.pow(speedY,2));
     }
@@ -73,4 +47,16 @@ public class Ball {
     public float getRadius(){
         return radius;
     }
+    public float getSpeedX() { return speedX; }
+    public float getSpeedY() { return speedY; }
+
+    // setter
+    public void setX(float x){ this.x = x; }
+    public void setY(float y){ this.y = y; }
+    public void updateMove() {
+        this.x += speedX;
+        this.y += speedY;
+    }
+    public void reverseSpeedX(){ speedX = -speedX; }
+    public void reverseSpeedY(){ speedY = -speedY; }
 }

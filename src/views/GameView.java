@@ -8,51 +8,34 @@ import javax.swing.*;
 import java.awt.*;
 
 public class GameView extends JFrame {
-    private static final int UPDATE_RATE = 100;
-    private Ball ball;
-    private Board board;
-    private Paddle[] paddles = new Paddle[2];
+    // model
+    Board board;
+    Ball ball;
+    Paddle[] paddles;
 
     private DrawCanvas canvas;
     private int canvasWidth;
     private int canvasHeight;
 
     public GameView(int width, int height){
-        super("Pong Game");
+        super("Complete Pong!");
         canvasWidth = width;
         canvasHeight = height;
-
-        ball = new Ball(canvasWidth/2,canvasHeight/2,10,5,20);
-        board = new Board(0,0,canvasWidth,canvasHeight);
-        paddles[0] = new Paddle(25,canvasHeight/2,100);
-        paddles[1] = new Paddle(canvasWidth-25,canvasHeight/2,100);
         canvas = new DrawCanvas();
-
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
-
         this.add(canvas, BorderLayout.CENTER);
-
         this.setVisible(true);
-        gameStartShow();
     }
 
-    public void gameStartShow(){
-        Thread gameThread = new Thread(){
-            public void run(){
-                while(true){
-                    ball.move(board,paddles);
-                    repaint();
-                    try {
-                        Thread.sleep(1000 / UPDATE_RATE);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        gameThread.start();
+    public void add(Object o) {
+        if(o instanceof  Ball)
+            this.ball = (Ball) o;
+        if(o instanceof Board)
+            this.board = (Board) o;
+        if(o instanceof Paddle[])
+            this.paddles = (Paddle[]) o;
     }
 
     class DrawCanvas extends JPanel{
