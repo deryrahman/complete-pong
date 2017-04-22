@@ -1,4 +1,4 @@
-package clientserver;//Example 25
+package clientserver;
 
 import java.io.DataInputStream;
 import java.io.PrintStream;
@@ -28,9 +28,11 @@ public class MultiThreadChatClient implements Runnable {
         String host = "localhost";
 
         if (args.length < 2) {
-            System.out
-                    .println("Usage: java MultiThreadChatClient <host> <portNumber>\n"
-                            + "Now using host=" + host + ", portNumber=" + portNumber);
+            System.out.println("Usage: java MultiThreadChatClient <host> <portNumber>\n"
+                    + "Now using host="
+                    + host
+                    + ", portNumber="
+                    + portNumber);
         } else {
             host = args[0];
             portNumber = Integer.valueOf(args[1]).intValue();
