@@ -5,12 +5,16 @@ import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PlayerController implements Runnable, KeyListener{
     private static final int UPDATE_RATE = 100;
     private Player player;
     private int playerNumber;
     private Thread t;
+
+    private final Set<Character> pressed = new HashSet<Character>();
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
@@ -36,24 +40,27 @@ public class PlayerController implements Runnable, KeyListener{
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        if(playerNumber==0){
-            switch (keyEvent.getKeyCode()){
-                case KeyEvent.VK_W:
-                    player.getPaddle().setSpeedY(-3);
-                    break;
-                case KeyEvent.VK_S:
-                    player.getPaddle().setSpeedY(3);
-                    break;
-            }
+        pressed.add(keyEvent.getKeyChar());
+        for(char c : pressed) {
+            if(playerNumber==0){
+                switch (keyEvent.getKeyCode()){
+                    case KeyEvent.VK_W:
+                        player.getPaddle().setSpeedY(-3);
+                        break;
+                    case KeyEvent.VK_S:
+                        player.getPaddle().setSpeedY(3);
+                        break;
+                }
 
-        } else if (playerNumber==1){
-            switch (keyEvent.getKeyCode()) {
-                case KeyEvent.VK_UP:
-                    player.getPaddle().setSpeedY(-3);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    player.getPaddle().setSpeedY(3);
-                    break;
+            } else if (playerNumber==1){
+                switch (keyEvent.getKeyCode()) {
+                    case KeyEvent.VK_UP:
+                        player.getPaddle().setSpeedY(-3);
+                        break;
+                    case KeyEvent.VK_DOWN:
+                        player.getPaddle().setSpeedY(3);
+                        break;
+                }
             }
         }
     }
