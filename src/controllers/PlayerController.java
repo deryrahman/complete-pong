@@ -14,7 +14,7 @@ public class PlayerController implements Runnable, KeyListener{
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
-        playerNumber=i;
+        playerNumber = i;
         gameView.addKeyListener(this);
     }
 

@@ -57,6 +57,10 @@ public class Ball {
         this.x += speedX;
         this.y += speedY;
     }
+    public void increaseSpeed(float speed) {
+        speedX += speed;
+        speedY += speed;
+    }
     public void reverseSpeedX(){ speedX = -speedX; }
     public void reverseSpeedY(){ speedY = -speedY; }
 }
