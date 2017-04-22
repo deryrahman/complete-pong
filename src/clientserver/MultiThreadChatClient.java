@@ -25,7 +25,7 @@ public class MultiThreadChatClient implements Runnable {
         // The default port.
         int portNumber = 2222;
         // The default host.
-        String host = "localhost";
+        String host = "192.168.1.107";
 
         if (args.length < 2) {
             System.out
