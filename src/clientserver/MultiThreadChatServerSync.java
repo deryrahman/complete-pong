@@ -1,4 +1,4 @@
-//Example 26 (updated)
+package clientserver;//Example 26 (updated)
 
 import java.io.DataInputStream;
 import java.io.PrintStream;
