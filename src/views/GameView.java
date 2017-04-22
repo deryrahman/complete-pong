@@ -1,6 +1,5 @@
 package views;
 
-import controllers.GameController;
 import models.Ball;
 import models.Board;
 import models.Paddle;
@@ -24,7 +23,7 @@ public class GameView extends JFrame {
     public GameView(int width, int height){
         super("Complete Pong!");
         canvasWidth = width;
-        canvasHeight = height;
+        canvasHeight = height+30;
         canvas = new DrawCanvas();
         WindowSize = new Dimension(width, height);
         Dimension screensize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
