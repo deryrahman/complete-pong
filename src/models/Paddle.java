@@ -5,6 +5,7 @@ import java.awt.*;
 public class Paddle {
     private float x;
     private float y;
+    private float speedY;
     private float length;
     private float width;
     private Color color;
@@ -13,6 +14,7 @@ public class Paddle {
     public Paddle(float x, float y, float length, Color color){
         this.x = x;
         this.y = y;
+        this.speedY = 0;
         this.length = length;
         this.width = 10;
         this.color = color;
@@ -21,9 +23,7 @@ public class Paddle {
         this(x,y,length,DEFAULT_COLOR);
     }
 
-    public void move(){
-
-    }
+    // getter
     public float getX(){
         return x;
     }
@@ -38,5 +38,14 @@ public class Paddle {
     }
     public float getWidth(){
         return width;
+    }
+
+    // setter
+    public void setSpeedY(float speedY){
+        this.speedY = speedY;
+    }
+
+    public void updateMove(){
+        y+=speedY;
     }
 }

@@ -3,56 +3,59 @@ package views;
 import models.Ball;
 import models.Board;
 import models.Paddle;
+import models.Player;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class GameView extends JFrame {
-    private static final int UPDATE_RATE = 100;
-    private Ball ball;
+    // model
     private Board board;
-    private Paddle[] paddles = new Paddle[2];
+    private Ball ball;
+    private Player[] players;
 
     private DrawCanvas canvas;
     private int canvasWidth;
     private int canvasHeight;
 
+    private Dimension WindowSize;
+
     public GameView(int width, int height){
-        super("Pong Game");
+        super("Complete Pong!");
         canvasWidth = width;
-        canvasHeight = height;
-
-        ball = new Ball(canvasWidth/2,canvasHeight/2,10,5,20);
-        board = new Board(0,0,canvasWidth,canvasHeight);
-        paddles[0] = new Paddle(25,canvasHeight/2,100);
-        paddles[1] = new Paddle(canvasWidth-25,canvasHeight/2,100);
+        canvasHeight = height+30;
         canvas = new DrawCanvas();
-
+        WindowSize = new Dimension(width, height);
+        Dimension screensize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        int x = screensize.width/2 - WindowSize.width/2;
+        int y = screensize.height/2 - WindowSize.height/2;
+        this.setBounds(x, y, WindowSize.width, WindowSize.height);
+
+        ball = new Ball(width/2,height/2,10,5,20);
+        board = new Board(0,0,width,height);
+        players = new Player[2];
+        players[0] = new Player("Player 1");
+        players[0].add(new Paddle(25,height/2,100));
+        players[1] = new Player("Player 2");
+        players[1].add(new Paddle(width-25,height/2,100));
+
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
-
         this.add(canvas, BorderLayout.CENTER);
-
+        this.requestFocusInWindow(true);
+        this.requestFocus();
         this.setVisible(true);
-        gameStartShow();
     }
 
-    public void gameStartShow(){
-        Thread gameThread = new Thread(){
-            public void run(){
-                while(true){
-                    ball.move(board,paddles);
-                    repaint();
-                    try {
-                        Thread.sleep(1000 / UPDATE_RATE);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        };
-        gameThread.start();
+    public Ball getBall(){
+        return ball;
+    }
+    public Board getBoard(){
+        return board;
+    }
+    public Player[] getPlayers(){
+        return players;
     }
 
     class DrawCanvas extends JPanel{
@@ -71,7 +74,8 @@ public class GameView extends JFrame {
         g.setColor(ball.getColor());
         g.fillOval((int)(ball.getX()-ball.getRadius()),(int)(ball.getY()-ball.getRadius()),(int)(2*ball.getRadius()),(int)(2*ball.getRadius()));
 
-        for(Paddle paddle : paddles){
+        for(Player player : players){
+            Paddle paddle = player.getPaddle();
             g.setColor(paddle.getColor());
             g.fillRect((int)(paddle.getX()-paddle.getWidth()/2),(int)(paddle.getY()-paddle.getLength()/2),(int)paddle.getWidth(),(int)paddle.getLength());
         }
