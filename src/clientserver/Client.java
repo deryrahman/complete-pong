@@ -43,7 +43,7 @@ public class Client implements Runnable {
     /**
      * Try to open client socket
      */
-    private static void openClientSocket() {
+    public static void openClientSocket() {
         try {
             clientSocket = new Socket(host, portNumber);
             inputLine = new BufferedReader(new InputStreamReader(System.in));
@@ -57,7 +57,7 @@ public class Client implements Runnable {
     /**
      * Wait for command
      */
-    private static void inputCommandWaiting() {
+    public static void inputCommandWaiting() {
         if (clientSocket != null && os != null && is != null) {
             try {
                 // Create a thread to read from the server
@@ -72,6 +72,21 @@ public class Client implements Runnable {
                 System.err.println("IOException:  " + e);
             }
         }
+    }
+
+    // setter
+    public static void setPortNumber(int p){
+        portNumber = p;
+    }
+    public static void setHost(String h){
+        host = h;
+    }
+    // getter
+    public static int getPortNumber(){
+        return portNumber;
+    }
+    public static String getHost(){
+        return host;
     }
 
     /**

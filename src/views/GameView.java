@@ -8,11 +8,7 @@ import spawnplugins.BrickArea;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.util.Random;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.util.Timer;
 
 public class GameView extends JFrame {
     // model
@@ -57,7 +53,7 @@ public class GameView extends JFrame {
 
         Random rand = new Random();
         int randomAngle = rand.nextInt(360);
-        ball = new Ball(width/2,height/2,10,5,randomAngle);
+        ball = new Ball(width/2,height/2,10,6,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];
         players[0] = new Player("Player 1");
@@ -85,6 +81,8 @@ public class GameView extends JFrame {
         return players;
     }
     public BrickArea getBrickArea(){ return brickArea; }
+    public int getCanvasHeight(){ return canvasHeight; }
+    public int getCanvasWidth(){ return canvasWidth; }
 
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
@@ -114,7 +112,11 @@ public class GameView extends JFrame {
             for(int j = 0;j < 10;j++){
                 if (brickArea.getBrick(i,j)) {
                     g.setColor(brickArea.getColor());
-                    g.fillRect((int) (400-brickArea.getWidth()/2+20*j),40*i,(int)brickArea.getBrickWidth(),(int)brickArea.getBrickLength());
+                    float minX = canvasWidth/2-brickArea.getWidth()/2+brickArea.getBrickWidth()*j+brickArea.getBrickBorder();
+                    float minY = brickArea.getBrickLength()*i+brickArea.getBrickBorder();
+                    float brickLengthShow = brickArea.getBrickLength()-2*brickArea.getBrickBorder();
+                    float brickWidthShow = brickArea.getBrickWidth()-2*brickArea.getBrickBorder();
+                    g.fillRect((int) (minX), (int) (minY),(int) brickWidthShow,(int) brickLengthShow);
                 }
             }
         }

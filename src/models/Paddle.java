@@ -51,4 +51,5 @@ public class Paddle {
     public void updateMove(){
         y+=speedY;
     }
+    public void setY(int y){ this.y = y; }
 }
