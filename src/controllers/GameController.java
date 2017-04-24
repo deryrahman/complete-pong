@@ -2,8 +2,12 @@ package controllers;
 
 import models.Ball;
 import models.Board;
+import models.Paddle;
 import models.Player;
+import spawnplugins.BallPowerUp;
 import spawnplugins.BrickArea;
+import spawnplugins.CenterArea;
+import spawnplugins.PaddlePowerUp;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -32,7 +36,10 @@ public class GameController implements Runnable, KeyListener {
     private Player player2;
     private Ball ball;
     private Board board;
+    private CenterArea centerArea;
     private BrickArea brickArea;
+    private BallPowerUp ballPowerUp;
+    private PaddlePowerUp paddlePowerUp;
     // view
     private GameView gameView;
 
@@ -42,7 +49,10 @@ public class GameController implements Runnable, KeyListener {
         board = gameView.getBoard();
         player1 = gameView.getPlayers()[0];
         player2 = gameView.getPlayers()[1];
+        centerArea = gameView.getCenterArea();
         brickArea = gameView.getBrickArea();
+        ballPowerUp = gameView.getBallPowerUp();
+        paddlePowerUp = gameView.getPaddlePowerUp();
         isMakeScore = false;
         ballSpeed = ball.getSpeed();
         gameView.addKeyListener(this);
@@ -109,10 +119,10 @@ public class GameController implements Runnable, KeyListener {
         int brickMinY, brickMaxY;
         for(int i = 0;i < 10;i++) {
             for (int j = 0; j < 10; j++) {
-                if(brickArea.getBrick(i,j)) {
-                    brickMinY = (int) (brickArea.getBrickLength()*i-ball.getRadius()); brickMaxY = (int) (brickArea.getBrickLength()*(i+1)+ball.getRadius());
-                    brickMinX = (int) (gameView.getCanvasWidth()/2-brickArea.getWidth()/2+brickArea.getBrickWidth()*j-ball.getRadius());
-                    brickMaxX = (int) (gameView.getCanvasWidth()/2-brickArea.getWidth()/2+brickArea.getBrickWidth()*(j+1)+ball.getRadius());
+                if(centerArea.getBrick(i,j)) {
+                    brickMinY = (int) (centerArea.getBrickLength()*i-ball.getRadius()); brickMaxY = (int) (centerArea.getBrickLength()*(i+1)+ball.getRadius());
+                    brickMinX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+centerArea.getBrickWidth()*j-ball.getRadius());
+                    brickMaxX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+centerArea.getBrickWidth()*(j+1)+ball.getRadius());
                     if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
                             ball.getY()>brickMinY && ball.getY()<brickMaxY) {
                         if(Math.abs(ball.getX()-brickMinX)<6) {
@@ -129,7 +139,11 @@ public class GameController implements Runnable, KeyListener {
                             if(ball.getSpeedY()<0)
                                 ball.reverseSpeedY();
                         }
-                        brickArea.destroy(i,j);
+                        if(centerArea.getType(i,j) == 3) {
+                            Paddle pDummy = new Paddle(0,0,0);
+                            ballPowerUp.usePU(ball,pDummy);
+                        }
+                        centerArea.destroy(i,j);
                     }
                 }
             }

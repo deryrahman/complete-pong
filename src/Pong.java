@@ -1,4 +1,4 @@
-import controllers.BrickAreaController;
+import controllers.CenterAreaController;
 import controllers.GameController;
 import controllers.PlayerController;
 import views.GameView;
@@ -10,7 +10,7 @@ public class Pong {
 
         GameView gameView = new GameView(1200,400);
         GameController gameController = new GameController(gameView);
-        BrickAreaController brickAreaController = new BrickAreaController(gameView);
+        CenterAreaController brickAreaController = new CenterAreaController(gameView);
         PlayerController player1 = new PlayerController(gameView,0);
         PlayerController player2 = new PlayerController(gameView,1);
         brickAreaController.start();
