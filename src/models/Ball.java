@@ -8,6 +8,7 @@ public class Ball {
     private float speedX;
     private float speedY;
     private float radius;
+    private float speed;
     private Color color;
     private static final Color DEFAULT_COLOR = Color.WHITE;
 
@@ -23,7 +24,7 @@ public class Ball {
         this(x,y,radius,speed,angleInDegree,DEFAULT_COLOR);
     }
     public float getSpeed(){
-        return (float)Math.sqrt(Math.pow(speedX,2)*Math.pow(speedY,2));
+        return (float)Math.sqrt(Math.pow(speedX,2)+Math.pow(speedY,2));
     }
     public float getMoveAngle(){
         return (float)Math.toDegrees(Math.atan2(-speedY, speedX));

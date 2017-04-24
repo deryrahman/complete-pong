@@ -14,6 +14,7 @@ public class BrickArea implements SpawnPlugin{
     private float width;
     private float brickLength;
     private float brickWidth;
+    private float brickBorder;
     private Color color;
     private static final Color DEFAULT_COLOR = Color.WHITE;
     private static boolean [][] bool_matrix;
@@ -27,6 +28,7 @@ public class BrickArea implements SpawnPlugin{
         }
         this.brickLength = 40;
         this.brickWidth = 20;
+        this.brickBorder = 2;
         this.width = 200;
         this.height = 400;
         this.color = DEFAULT_COLOR;
@@ -45,7 +47,7 @@ public class BrickArea implements SpawnPlugin{
         return brickWidth;
     }
     public boolean getBrick(int x,int y) { return bool_matrix[x][y]; }
-
+    public float getBrickBorder() { return brickBorder; }
     public String toString() {
         return "Brick";
     }
