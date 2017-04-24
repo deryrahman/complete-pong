@@ -39,6 +39,7 @@ public class Paddle {
     public float getWidth(){
         return width;
     }
+    public float getSpeedY() { return speedY; }
 
     // setter
     public void setSpeedY(float speedY){

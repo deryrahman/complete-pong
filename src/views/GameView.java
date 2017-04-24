@@ -28,8 +28,11 @@ public class GameView extends JFrame {
         WindowSize = new Dimension(width, height);
         Dimension screensize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // Display in the center of the screen
         int x = screensize.width/2 - WindowSize.width/2;
         int y = screensize.height/2 - WindowSize.height/2;
+
         this.setBounds(x, y, WindowSize.width, WindowSize.height);
 
         ball = new Ball(width/2,height/2,10,5,20);
@@ -62,7 +65,9 @@ public class GameView extends JFrame {
         public void paintComponent(Graphics g){
             super.paintComponent(g);
             draw(g);
-            g.drawString("Ball " + ball.toString(), 20, 30);
+//            g.drawString("Ball " + ball.toString(), 20, 30);
+            g.drawString("Player 1 : " + players[0].getScores(),20,30);
+            g.drawString("Player 2 : " + players[1].getScores(),100,30);
         }
     }
 
