@@ -14,6 +14,7 @@ public abstract class CenterArea implements SpawnPlugin{
     private final float width = 200;
     private final float brickLength = 40;
     private final float brickWidth = 20;
+    private final float brickBorder = 2;
     Color color;
 
     // getter
@@ -28,6 +29,7 @@ public abstract class CenterArea implements SpawnPlugin{
     public float getBrickWidth(){
         return brickWidth;
     }
+    public float getBrickBorder() { return brickBorder; }
     public boolean getBrick(int x,int y) { return bool_matrix[x][y]; }
 
     @Override
