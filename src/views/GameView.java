@@ -8,10 +8,6 @@ import spawnplugins.BrickArea;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.TimerTask;
-import java.util.Vector;
-import java.util.Timer;
 
 public class GameView extends JFrame {
     // model
