@@ -49,8 +49,6 @@ public class GameController implements Runnable, KeyListener {
         gameView.repaint();
     }
 
-
-
     public void moveBall(){
         ball.updateMove();
         updateBoundary();
@@ -66,14 +64,14 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player1.makeScore();
+            player2.makeScore();
             isMakeScore = true;
         } else if (ball.getX() > ballMaxX) {
             ball.reverseSpeedX();
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player2.makeScore();
+            player1.makeScore();
             isMakeScore = true;
         }
 
@@ -90,11 +88,13 @@ public class GameController implements Runnable, KeyListener {
         if(ball.getX()<minXPaddle1 && ball.getY()>minYPaddle1 && ball.getY()<maxYPaddle1){
             ball.reverseSpeedX();
             ball.setX(minXPaddle1);
+            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
             ball.reverseSpeedX();
             ball.setX(minXPaddle2);
+            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
         }
     }
 
