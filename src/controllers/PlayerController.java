@@ -11,19 +11,29 @@ public class PlayerController implements Runnable, KeyListener{
     private static final int UPDATE_RATE = 100;
     private Player player;
     private int playerNumber;
+    private int canvasHeight;
     private Thread t;
-    private boolean pressed = false;
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
         playerNumber=i;
+        canvasHeight = gameView.getCanvasHeight();
         gameView.addKeyListener(this);
     }
 
     @Override
     public void run() {
         while (true){
-            player.getPaddle().updateMove();
+            float minYPaddle = player.getPaddle().getY()-player.getPaddle().getLength()/2;
+            float maxYPaddle = player.getPaddle().getY()+player.getPaddle().getLength()/2;
+            if(minYPaddle<0 || maxYPaddle>canvasHeight)
+                if(minYPaddle<0)
+                    player.getPaddle().setY((int) (player.getPaddle().getLength()/2));
+                if(maxYPaddle>canvasHeight)
+                    player.getPaddle().setY((int) (canvasHeight-player.getPaddle().getLength()/2));
+            else {
+                player.getPaddle().updateMove();
+            }
             try{
                 Thread.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException e) {
@@ -42,19 +52,19 @@ public class PlayerController implements Runnable, KeyListener{
         if(playerNumber==0){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_W:
-                    player.getPaddle().setSpeedY(-3);
+                    player.getPaddle().setSpeedY(-4);
                     break;
                 case KeyEvent.VK_S:
-                    player.getPaddle().setSpeedY(3);
+                    player.getPaddle().setSpeedY(4);
                     break;
             }
         } else if (playerNumber==1){
             switch (keyEvent.getKeyCode()) {
                 case KeyEvent.VK_UP:
-                    player.getPaddle().setSpeedY(-3);
+                    player.getPaddle().setSpeedY(-4);
                     break;
                 case KeyEvent.VK_DOWN:
-                    player.getPaddle().setSpeedY(3);
+                    player.getPaddle().setSpeedY(4);
                     break;
             }
         }
