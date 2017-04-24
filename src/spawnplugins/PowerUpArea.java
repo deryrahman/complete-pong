@@ -8,8 +8,7 @@ import models.Paddle;
  */
 
 public abstract class PowerUpArea extends CenterArea {
-    int typePU;
 
-    public int getTypePU() { return typePU; }
     abstract void usePU(Ball b, Paddle p);
+
 }

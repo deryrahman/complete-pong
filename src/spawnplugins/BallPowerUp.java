@@ -4,6 +4,7 @@ import models.Ball;
 import models.Paddle;
 
 import java.awt.*;
+import java.util.Random;
 
 /**
  * Created by Faiz Ghifari Haznitrama on 22/04/2017.
@@ -11,18 +12,25 @@ import java.awt.*;
 
 public class BallPowerUp extends PowerUpArea {
     public BallPowerUp() {
-        for(int i = 0;i < 10;i++){
-            for(int j = 0;j < 10;j++) {
-                bool_matrix[i][j] = false;
-            }
-        }
+        super();
         color = Color.red;
-        typePU = 1;
     }
 
     @Override
     public void usePU(Ball b, Paddle p) {
-        float getAngle = b.getMoveAngle();
-        b.setSpeed(8,getAngle);
+        b.setSpeed((float) (b.getSpeed()+1),b.getMoveAngle());
     }
+
+    @Override
+    public void spawn() {
+        int nx,ny;
+        do {
+            Random rand = new Random();
+            nx = rand.nextInt(10);
+            ny = rand.nextInt(10);
+        } while(bool_matrix[nx][ny]);
+        bool_matrix[nx][ny] = true;
+        type_matrix[nx][ny] = 3;
+    }
+
 }
