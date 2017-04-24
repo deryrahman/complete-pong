@@ -52,14 +52,10 @@ public class BrickArea implements SpawnPlugin{
 
     @Override
     public void spawn() {
-//        Random rand = new Random();
-//        int nx = rand.nextInt(10);
-//        int ny = rand.nextInt(10);
-        bool_matrix[5][5] = true;
-        bool_matrix[2][9] = true;
-        bool_matrix[8][1] = true;
-        bool_matrix[6][4] = true;
-        bool_matrix[3][3] = true;
+        Random rand = new Random();
+        int nx = rand.nextInt(10);
+        int ny = rand.nextInt(10);
+        bool_matrix[nx][ny] = true;
     }
 
     @Override

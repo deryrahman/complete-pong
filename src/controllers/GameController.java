@@ -104,8 +104,9 @@ public class GameController implements Runnable, KeyListener {
         for(int i = 0;i < 10;i++) {
             for (int j = 0; j < 10; j++) {
                 if(brickArea.getBrick(i,j)) {
-                    brickMinY = 40*i; brickMaxY = 40*(i+1);
-                    brickMinX = (int) (400-brickArea.getWidth()/2+20*i); brickMaxX = (int) (400-brickArea.getWidth()/2+20*(i+1));
+                    brickMinY = (int) (40*i-ball.getRadius()); brickMaxY = (int) (40*(i+1)+ball.getRadius());
+                    brickMinX = (int) (400-brickArea.getWidth()/2+20*j-ball.getRadius());
+                    brickMaxX = (int) (400-brickArea.getWidth()/2+20*(j+1)+ball.getRadius());
                     if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
                             ball.getY()>brickMinY && ball.getY()<brickMaxY) {
                         ball.reverseSpeedX();

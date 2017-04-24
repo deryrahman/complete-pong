@@ -62,7 +62,6 @@ public class GameView extends JFrame {
         players[1] = new Player("Player 2");
         players[1].add(new Paddle(width-25,height/2,100));
         brickArea = new BrickArea();
-        brickArea.spawn();
 
 
         this.setLayout(new BorderLayout());
