@@ -3,6 +3,7 @@ package controllers;
 import models.Ball;
 import models.Board;
 import models.Player;
+import spawnplugins.BrickArea;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -29,6 +30,7 @@ public class GameController implements Runnable, KeyListener {
     private Player player2;
     private Ball ball;
     private Board board;
+    private BrickArea brickArea;
     // view
     private GameView gameView;
 
@@ -38,6 +40,7 @@ public class GameController implements Runnable, KeyListener {
         board = gameView.getBoard();
         player1 = gameView.getPlayers()[0];
         player2 = gameView.getPlayers()[1];
+        brickArea = gameView.getBrickArea();
         isMakeScore = false;
         gameView.addKeyListener(this);
     }
@@ -45,8 +48,6 @@ public class GameController implements Runnable, KeyListener {
     public void updatePaint(){
         gameView.repaint();
     }
-
-
 
     public void moveBall(){
         ball.updateMove();
@@ -63,14 +64,14 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player1.makeScore();
+            player2.makeScore();
             isMakeScore = true;
         } else if (ball.getX() > ballMaxX) {
             ball.reverseSpeedX();
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player2.makeScore();
+            player1.makeScore();
             isMakeScore = true;
         }
 
@@ -87,16 +88,33 @@ public class GameController implements Runnable, KeyListener {
         if(ball.getX()<minXPaddle1 && ball.getY()>minYPaddle1 && ball.getY()<maxYPaddle1){
             ball.reverseSpeedX();
             ball.setX(minXPaddle1);
+            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
             ball.reverseSpeedX();
             ball.setX(minXPaddle2);
+            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
         }
     }
 
     private void ballHitBrick() {
-        // bagian Faiz
+        int brickMinX, brickMaxX;
+        int brickMinY, brickMaxY;
+        for(int i = 0;i < 10;i++) {
+            for (int j = 0; j < 10; j++) {
+                if(brickArea.getBrick(i,j)) {
+                    brickMinY = (int) (40*i-ball.getRadius()); brickMaxY = (int) (40*(i+1)+ball.getRadius());
+                    brickMinX = (int) (400-brickArea.getWidth()/2+20*j-ball.getRadius());
+                    brickMaxX = (int) (400-brickArea.getWidth()/2+20*(j+1)+ball.getRadius());
+                    if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
+                            ball.getY()>brickMinY && ball.getY()<brickMaxY) {
+                        ball.reverseSpeedX();
+                        brickArea.destroy(i,j);
+                    }
+                }
+            }
+        }
     }
 
     private void updateBoundary() {

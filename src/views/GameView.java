@@ -4,15 +4,21 @@ import models.Ball;
 import models.Board;
 import models.Paddle;
 import models.Player;
+import spawnplugins.BrickArea;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.util.TimerTask;
+import java.util.Vector;
+import java.util.Timer;
 
 public class GameView extends JFrame {
     // model
     private Board board;
     private Ball ball;
     private Player[] players;
+    private BrickArea brickArea;
 
     private DrawCanvas canvas;
     private int canvasWidth;
@@ -35,6 +41,19 @@ public class GameView extends JFrame {
 
         this.setBounds(x, y, WindowSize.width, WindowSize.height);
 
+//        File f = new File("src/spawnplugins");
+//        String plugin_names[] = f.list();
+//        for (String name : plugin_names) {
+//            System.out.println(name);
+//            try {
+//                Class c = Class.forName(name);
+//                Vector<Class> spawnPlugins = new Vector<>();
+//                spawnPlugins.add(c);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+
         ball = new Ball(width/2,height/2,10,5,20);
         board = new Board(0,0,width,height);
         players = new Player[2];
@@ -42,6 +61,8 @@ public class GameView extends JFrame {
         players[0].add(new Paddle(25,height/2,100));
         players[1] = new Player("Player 2");
         players[1].add(new Paddle(width-25,height/2,100));
+        brickArea = new BrickArea();
+
 
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
@@ -60,6 +81,7 @@ public class GameView extends JFrame {
     public Player[] getPlayers(){
         return players;
     }
+    public BrickArea getBrickArea(){ return brickArea; }
 
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
@@ -83,6 +105,15 @@ public class GameView extends JFrame {
             Paddle paddle = player.getPaddle();
             g.setColor(paddle.getColor());
             g.fillRect((int)(paddle.getX()-paddle.getWidth()/2),(int)(paddle.getY()-paddle.getLength()/2),(int)paddle.getWidth(),(int)paddle.getLength());
+        }
+
+        for(int i = 0;i < 10;i++){
+            for(int j = 0;j < 10;j++){
+                if (brickArea.getBrick(i,j)) {
+                    g.setColor(brickArea.getColor());
+                    g.fillRect((int) (400-brickArea.getWidth()/2+20*j),40*i,(int)brickArea.getBrickWidth(),(int)brickArea.getBrickLength());
+                }
+            }
         }
     }
 }
