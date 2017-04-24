@@ -14,7 +14,7 @@ public class MenuView extends JFrame{
     private JFrame mainFrame;
     private JLabel headerLabel;
     private JLabel statusLabel;
-    private JPanel controlPanel;
+    private ControlPanel controlPanel;
 
     public MenuView(){
         prepareGUI();
@@ -23,11 +23,12 @@ public class MenuView extends JFrame{
         MenuView  swingControlDemo = new MenuView();
         swingControlDemo.showTextFieldDemo();
     }
+
     private void prepareGUI(){
         mainFrame = new JFrame("Java Swing Examples");
         mainFrame.setSize(800,400);
-        mainFrame.setLayout(new GridLayout(3, 1));
-        //mainFrame.setForeground(Color.BLACK);
+        mainFrame.setBackground(Color.BLACK);
+        mainFrame.setLayout(new FlowLayout());
 
         mainFrame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent){
@@ -39,9 +40,9 @@ public class MenuView extends JFrame{
         statusLabel = new JLabel("",JLabel.CENTER);
         statusLabel.setSize(350,100);
 
-        controlPanel = new JPanel();
-        //controlPanel.setLayout(new FlowLayout());
-        
+        controlPanel = new ControlPanel();
+        controlPanel.setLayout(new FlowLayout());
+
         mainFrame.add(headerLabel);
         mainFrame.add(controlPanel);
         mainFrame.add(statusLabel);
@@ -79,6 +80,13 @@ public class MenuView extends JFrame{
         controlPanel.add(player2Name);
 
         mainFrame.setVisible(true);
+    }
+
+    class ControlPanel extends JPanel{
+        public void paint(Graphics g) {
+            g.setColor(Color.BLACK);
+            super.paint(g);
+        }
     }
 
 }

@@ -1,7 +1,6 @@
 import controllers.BrickAreaController;
 import controllers.GameController;
 import controllers.PlayerController;
-import models.Player;
 import views.GameView;
 
 public class Pong {
