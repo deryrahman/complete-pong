@@ -57,9 +57,13 @@ public class Ball {
         this.x += speedX;
         this.y += speedY;
     }
-    public void increaseSpeed(float speed) {
-        speedX += speed;
-        speedY += speed;
+    public void setSpeedToZero(){
+        speedX=0;
+        speedY=0;
+    }
+    public void setSpeed(float speed, float angleInDegree){
+        this.speedX = speed * (float)Math.cos(Math.toRadians(angleInDegree));
+        this.speedY = -speed * (float)Math.sin(Math.toRadians(angleInDegree));
     }
     public void reverseSpeedX(){ speedX = -speedX; }
     public void reverseSpeedY(){ speedY = -speedY; }

@@ -5,20 +5,18 @@ import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.security.Key;
 
 public class PlayerController implements Runnable, KeyListener{
     private static final int UPDATE_RATE = 100;
     private Player player;
     private int playerNumber;
     private Thread t;
-
-    private final Set<Character> pressed = new HashSet<Character>();
+    private boolean pressed = false;
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
-        playerNumber = i;
+        playerNumber=i;
         gameView.addKeyListener(this);
     }
 
@@ -40,34 +38,37 @@ public class PlayerController implements Runnable, KeyListener{
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        pressed.add(keyEvent.getKeyChar());
-        for(char c : pressed) {
-            if(playerNumber==0){
-                switch (keyEvent.getKeyCode()){
-                    case KeyEvent.VK_W:
-                        player.getPaddle().setSpeedY(-3);
-                        break;
-                    case KeyEvent.VK_S:
-                        player.getPaddle().setSpeedY(3);
-                        break;
-                }
-
-            } else if (playerNumber==1){
-                switch (keyEvent.getKeyCode()) {
-                    case KeyEvent.VK_UP:
-                        player.getPaddle().setSpeedY(-3);
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        player.getPaddle().setSpeedY(3);
-                        break;
-                }
+//        System.out.println(keyEvent.getKeyCode());
+        if(playerNumber==0){
+            switch (keyEvent.getKeyCode()){
+                case KeyEvent.VK_W:
+                    player.getPaddle().setSpeedY(-3);
+                    break;
+                case KeyEvent.VK_S:
+                    player.getPaddle().setSpeedY(3);
+                    break;
+            }
+        } else if (playerNumber==1){
+            switch (keyEvent.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    player.getPaddle().setSpeedY(-3);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    player.getPaddle().setSpeedY(3);
+                    break;
             }
         }
     }
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        player.getPaddle().setSpeedY(0);
+        float direction = -player.getPaddle().getSpeedY();
+        if((direction>0 && keyEvent.getKeyCode()==KeyEvent.VK_W && playerNumber==0) ||
+                (direction>0 && keyEvent.getKeyCode()==KeyEvent.VK_UP && playerNumber==1) ||
+                (direction<0 && keyEvent.getKeyCode()==KeyEvent.VK_S && playerNumber==0) ||
+                (direction<0 && keyEvent.getKeyCode()==KeyEvent.VK_DOWN && playerNumber==1)) {
+            player.getPaddle().setSpeedY(0);
+        }
     }
 
     public void start(){
