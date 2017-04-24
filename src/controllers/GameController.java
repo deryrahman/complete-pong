@@ -8,6 +8,7 @@ import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Random;
 
 public class GameController implements Runnable, KeyListener {
     private static final int UPDATE_RATE = 100;
@@ -23,6 +24,7 @@ public class GameController implements Runnable, KeyListener {
     private float maxYPaddle1;
     private float minYPaddle2;
     private float maxYPaddle2;
+    private float ballSpeed;
 
     private boolean isMakeScore;
     // model
@@ -42,6 +44,7 @@ public class GameController implements Runnable, KeyListener {
         player2 = gameView.getPlayers()[1];
         brickArea = gameView.getBrickArea();
         isMakeScore = false;
+        ballSpeed = ball.getSpeed();
         gameView.addKeyListener(this);
     }
 
@@ -88,13 +91,16 @@ public class GameController implements Runnable, KeyListener {
         if(ball.getX()<minXPaddle1 && ball.getY()>minYPaddle1 && ball.getY()<maxYPaddle1){
             ball.reverseSpeedX();
             ball.setX(minXPaddle1);
-            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
+            ball.setSpeed(ball.getSpeed(),(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
+//            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
             ball.reverseSpeedX();
             ball.setX(minXPaddle2);
-            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
+            ball.setSpeed(ball.getSpeed(),(player2.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
+            ball.reverseSpeedX();
+//            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
         }
     }
 
@@ -104,12 +110,25 @@ public class GameController implements Runnable, KeyListener {
         for(int i = 0;i < 10;i++) {
             for (int j = 0; j < 10; j++) {
                 if(brickArea.getBrick(i,j)) {
-                    brickMinY = (int) (40*i-ball.getRadius()); brickMaxY = (int) (40*(i+1)+ball.getRadius());
-                    brickMinX = (int) (400-brickArea.getWidth()/2+20*j-ball.getRadius());
-                    brickMaxX = (int) (400-brickArea.getWidth()/2+20*(j+1)+ball.getRadius());
+                    brickMinY = (int) (brickArea.getBrickLength()*i-ball.getRadius()); brickMaxY = (int) (brickArea.getBrickLength()*(i+1)+ball.getRadius());
+                    brickMinX = (int) (gameView.getCanvasWidth()/2-brickArea.getWidth()/2+brickArea.getBrickWidth()*j-ball.getRadius());
+                    brickMaxX = (int) (gameView.getCanvasWidth()/2-brickArea.getWidth()/2+brickArea.getBrickWidth()*(j+1)+ball.getRadius());
                     if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
                             ball.getY()>brickMinY && ball.getY()<brickMaxY) {
-                        ball.reverseSpeedX();
+                        if(Math.abs(ball.getX()-brickMinX)<6) {
+                            if(ball.getSpeedX()>0)
+                                ball.reverseSpeedX();
+                        } else if (Math.abs(ball.getX()-brickMaxX)<6){
+                            if(ball.getSpeedX()<0)
+                                ball.reverseSpeedX();
+                        }
+                        if(Math.abs(ball.getY()-brickMinY)<6) {
+                            if(ball.getSpeedY()>0)
+                                ball.reverseSpeedY();
+                        } else if (Math.abs(ball.getY()-brickMaxY)<6){
+                            if(ball.getSpeedY()<0)
+                                ball.reverseSpeedY();
+                        }
                         brickArea.destroy(i,j);
                     }
                 }
@@ -159,7 +178,9 @@ public class GameController implements Runnable, KeyListener {
     public void keyPressed(KeyEvent keyEvent) {
         System.out.println(KeyEvent.VK_SPACE);
         if(keyEvent.getKeyCode() == KeyEvent.VK_SPACE && isMakeScore){
-            ball.setSpeed(5,20);
+            Random rand = new Random();
+            int randomAngle = rand.nextInt(360);
+            ball.setSpeed(ballSpeed,randomAngle);
             isMakeScore=false;
         }
     }
