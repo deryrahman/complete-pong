@@ -3,6 +3,7 @@ package controllers;
 import models.Ball;
 import models.Board;
 import models.Player;
+import spawnplugins.BrickArea;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -29,6 +30,7 @@ public class GameController implements Runnable, KeyListener {
     private Player player2;
     private Ball ball;
     private Board board;
+    private BrickArea brickArea;
     // view
     private GameView gameView;
 
@@ -38,6 +40,7 @@ public class GameController implements Runnable, KeyListener {
         board = gameView.getBoard();
         player1 = gameView.getPlayers()[0];
         player2 = gameView.getPlayers()[1];
+        brickArea = gameView.getBrickArea();
         isMakeScore = false;
         gameView.addKeyListener(this);
     }
@@ -96,7 +99,21 @@ public class GameController implements Runnable, KeyListener {
     }
 
     private void ballHitBrick() {
-        // bagian Faiz
+        int brickMinX, brickMaxX;
+        int brickMinY, brickMaxY;
+        for(int i = 0;i < 10;i++) {
+            for (int j = 0; j < 10; j++) {
+                if(brickArea.getBrick(i,j)) {
+                    brickMinY = 40*i; brickMaxY = 40*(i+1);
+                    brickMinX = (int) (400-brickArea.getWidth()/2+20*i); brickMaxX = (int) (400-brickArea.getWidth()/2+20*(i+1));
+                    if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
+                            ball.getY()>brickMinY && ball.getY()<brickMaxY) {
+                        ball.reverseSpeedX();
+                        brickArea.destroy(i,j);
+                    }
+                }
+            }
+        }
     }
 
     private void updateBoundary() {
