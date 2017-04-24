@@ -5,12 +5,14 @@ import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.security.Key;
 
 public class PlayerController implements Runnable, KeyListener{
     private static final int UPDATE_RATE = 100;
     private Player player;
     private int playerNumber;
     private Thread t;
+    private boolean pressed = false;
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
@@ -36,6 +38,7 @@ public class PlayerController implements Runnable, KeyListener{
 
     @Override
     public void keyPressed(KeyEvent keyEvent) {
+//        System.out.println(keyEvent.getKeyCode());
         if(playerNumber==0){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_W:
@@ -45,7 +48,6 @@ public class PlayerController implements Runnable, KeyListener{
                     player.getPaddle().setSpeedY(3);
                     break;
             }
-
         } else if (playerNumber==1){
             switch (keyEvent.getKeyCode()) {
                 case KeyEvent.VK_UP:
@@ -60,7 +62,13 @@ public class PlayerController implements Runnable, KeyListener{
 
     @Override
     public void keyReleased(KeyEvent keyEvent) {
-        player.getPaddle().setSpeedY(0);
+        float direction = -player.getPaddle().getSpeedY();
+        if((direction>0 && keyEvent.getKeyCode()==KeyEvent.VK_W && playerNumber==0) ||
+                (direction>0 && keyEvent.getKeyCode()==KeyEvent.VK_UP && playerNumber==1) ||
+                (direction<0 && keyEvent.getKeyCode()==KeyEvent.VK_S && playerNumber==0) ||
+                (direction<0 && keyEvent.getKeyCode()==KeyEvent.VK_DOWN && playerNumber==1)) {
+            player.getPaddle().setSpeedY(0);
+        }
     }
 
     public void start(){
