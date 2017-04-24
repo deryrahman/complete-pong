@@ -45,7 +45,9 @@ public class Paddle {
     public void setSpeedY(float speedY){
         this.speedY = speedY;
     }
-
+    public void changeLength(float length) {
+        this.length = length;
+    }
     public void updateMove(){
         y+=speedY;
     }
