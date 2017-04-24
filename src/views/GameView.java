@@ -9,6 +9,7 @@ import spawnplugins.BrickArea;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.util.Random;
 import java.util.TimerTask;
 import java.util.Vector;
 import java.util.Timer;
@@ -54,7 +55,9 @@ public class GameView extends JFrame {
 //            }
 //        }
 
-        ball = new Ball(width/2,height/2,10,5,20);
+        Random rand = new Random();
+        int randomAngle = rand.nextInt(360);
+        ball = new Ball(width/2,height/2,10,5,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];
         players[0] = new Player("Player 1");
