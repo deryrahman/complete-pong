@@ -14,20 +14,76 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
 
+/**
+ * GameController class as controller for all objects in-game
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
+ */
 public class GameController implements Runnable, KeyListener {
+    /**
+     * define the update rate as constant
+     */
     private static final int UPDATE_RATE = 100;
+
+    /**
+     * thread specially responsible for players to implements
+     * multithreading by concurrency
+     */
     private Thread t;
 
+    /**
+     * ball's most left side
+     */
     private float ballMinX;
+
+    /**
+     * ball's most top side
+     */
     private float ballMinY;
+
+    /**
+     * ball's most right side
+     */
     private float ballMaxX;
+
+    /**
+     * ball's most bottom side
+     */
     private float ballMaxY;
+
+    /**
+     * paddle1's most left side
+     */
     private float minXPaddle1;
+    /**
+     * paddle2's most left side
+     */
     private float minXPaddle2;
+
+    /**
+     * paddle1's most top side
+     */
     private float minYPaddle1;
+
+    /**
+     * paddle1's most bottom side
+     */
     private float maxYPaddle1;
+
+    /**
+     * paddle2's most top side
+     */
     private float minYPaddle2;
+
+    /**
+     * paddle's most bottom side
+     */
     private float maxYPaddle2;
+
+    /**
+     * define the ball speed
+     */
     private float ballSpeed;
 
     private boolean isMakeScore;
