@@ -10,12 +10,7 @@ import java.util.Random;
  * Created by Faiz Ghifari Haznitrama on 22/04/2017.
  */
 
-public class PaddlePowerUp extends PowerUpArea {
-    public PaddlePowerUp() {
-        super();
-        color = Color.orange;
-    }
-
+public class PaddlePowerUp extends Cell implements PowerUp {
     @Override
     public void usePU(Ball b, Paddle p) {
         p.changeLength(150);
@@ -23,13 +18,11 @@ public class PaddlePowerUp extends PowerUpArea {
 
     @Override
     public void spawn() {
-        int nx,ny;
-        do {
-            Random rand = new Random();
-            nx = rand.nextInt(10);
-            ny = rand.nextInt(10);
-        } while(bool_matrix[nx][ny]);
-        bool_matrix[nx][ny] = true;
-        type_matrix[nx][ny] = 2;
+        type = PAD_POWERUP;
+    }
+
+    @Override
+    public Color getColor() {
+        return PAD_PU_COLOR;
     }
 }

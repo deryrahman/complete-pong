@@ -7,57 +7,45 @@ import java.util.Random;
  * Created by Faiz Ghifari Haznitrama on 22/04/2017.
  */
 
-public class CenterArea implements SpawnPlugin{
-    static boolean[][] bool_matrix = new boolean[10][10];
-    static int[][] type_matrix = new int[10][10];
-    static final Color DEFAULT_COLOR = Color.BLACK;
-    private final float height = 400;
-    private final float width = 200;
-    private final float brickLength = 40;
-    private final float brickWidth = 20;
-    private final float brickBorder = 2;
-    Color color;
+public class CenterArea {
+    protected static Cell[][] cell;
 
-    public CenterArea() {
-        for(int i = 0;i < 10;i++){
-            for(int j = 0;j < 10;j++) {
-                bool_matrix[i][j] = false;
-                type_matrix[i][j] = 0;
-            }
+    protected int height;
+    protected int width;
+    protected int matrixHeight=10;
+    protected int matrixWidth=10;
+
+    public CenterArea(int width, int height) {
+        this.width=width;
+        this.height=height;
+        cell = new Cell[matrixHeight][matrixWidth];
+        for(int i = 0; i < matrixHeight; i++){
+            cell[i] = new Cell[matrixWidth];
+//            for(int j = 0; j < width; j++) {
+//                cell[i][j].type = Cell.NO_BRICK;
+//            }
         }
-        color = DEFAULT_COLOR;
     }
 
-    // getter
-    public Color getColor(){
-        return color;
-    }
     public float getHeight() { return height; }
     public float getWidth() { return width; }
-    public float getBrickLength(){
-        return brickLength;
+    public Cell getCell(int i, int j) { return cell[i][j]; }
+    public void setRandomCell(int type) {
+        int i, j;
+        Random rand = new Random();
+        i = rand.nextInt(10);
+        j = rand.nextInt(10);
+        if(cell[i][j]==null) {
+            if (type == Cell.BRICK) {
+                cell[i][j] = new Brick();
+            } else if (type == Cell.BALL_POWERUP) {
+                cell[i][j] = new BallPowerUp();
+            } else if (type == Cell.PAD_POWERUP) {
+                cell[i][j] = new PaddlePowerUp();
+            }
+            cell[i][j].spawn();
+        }
     }
-    public float getBrickWidth(){
-        return brickWidth;
-    }
-    public float getBrickBorder() { return brickBorder; }
-    public boolean getBrick(int x,int y) { return bool_matrix[x][y]; }
-    public int getType(int x,int y) { return type_matrix[x][y]; }
+    public void destroyCell(int i, int j) { cell[i][j] = null; }
 
-    @Override
-    public void spawn() {
-        int nx,ny;
-        do {
-            Random rand = new Random();
-            nx = rand.nextInt(10);
-            ny = rand.nextInt(10);
-        } while(bool_matrix[nx][ny]);
-        bool_matrix[nx][ny] = true;
-    }
-
-    @Override
-    public void destroy(int x, int y) {
-        bool_matrix[x][y] = false;
-        type_matrix[x][y] = 0;
-    }
 }
