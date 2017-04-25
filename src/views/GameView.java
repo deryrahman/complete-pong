@@ -101,6 +101,8 @@ public class GameView extends JFrame {
             g.setColor(Color.WHITE);
             g.drawString("Player 1 : " + players[0].getScores(),20,30);
             g.drawString("Player 2 : " + players[1].getScores(),100,30);
+            g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,60);
+            g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,90);
         }
     }
 

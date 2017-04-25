@@ -10,6 +10,7 @@ public class Ball {
     private float radius;
     private float speed;
     private Color color;
+    private int belongsTo;
     private static final Color DEFAULT_COLOR = Color.WHITE;
 
     public Ball(float x, float y, float radius, float speed, float angleInDegree, Color color){
@@ -19,6 +20,7 @@ public class Ball {
         this.speedX = speed * (float)Math.cos(Math.toRadians(angleInDegree));
         this.speedY = -speed * (float)Math.sin(Math.toRadians(angleInDegree));
         this.color = color;
+        this.belongsTo = -1;
     }
     public Ball(float x, float y, float radius, float speed, float angleInDegree){
         this(x,y,radius,speed,angleInDegree,DEFAULT_COLOR);
@@ -50,6 +52,7 @@ public class Ball {
     }
     public float getSpeedX() { return speedX; }
     public float getSpeedY() { return speedY; }
+    public int getBelongsTo() { return belongsTo; }
 
     // setter
     public void setX(float x){ this.x = x; }
@@ -71,4 +74,5 @@ public class Ball {
     }
     public void reverseSpeedX(){ speedX = -speedX; }
     public void reverseSpeedY(){ speedY = -speedY; }
+    public void setBelongsTo(int belongsTo) { this.belongsTo = belongsTo; }
 }

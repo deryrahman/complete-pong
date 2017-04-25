@@ -13,7 +13,8 @@ import java.util.Random;
 public class PaddlePowerUp extends Cell implements PowerUp {
     @Override
     public void usePU(Ball b, Paddle p) {
-        p.changeLength(150);
+        p.startTimer();
+        p.changeLength();
     }
 
     @Override

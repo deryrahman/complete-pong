@@ -40,6 +40,9 @@ public class PlayerController implements Runnable, KeyListener{
             else {
                 player.getPaddle().updateMove();
             }
+
+            player.getPaddle().changeLength();
+
             if(playerNumber==0){
                 if((ball.getX()<canvasWidth/2 && playerNumber==0) || (ball.getX()>canvasWidth/2 && playerNumber==1)) {
                     Random rand = new Random();

@@ -97,6 +97,7 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(minXPaddle1);
             ball.setSpeed(ball.getSpeed(),(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
 //            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
+            ball.setBelongsTo(0);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
@@ -105,6 +106,7 @@ public class GameController implements Runnable, KeyListener {
             ball.setSpeed(ball.getSpeed(),(player2.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
             ball.reverseSpeedX();
 //            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
+            ball.setBelongsTo(1);
         }
     }
 
@@ -137,6 +139,12 @@ public class GameController implements Runnable, KeyListener {
                         }
                         if(cell instanceof BallPowerUp) {
                             ((BallPowerUp) cell).usePU(ball,null);
+                        }
+                        if(cell instanceof PaddlePowerUp){
+                            if(ball.getBelongsTo()==0)
+                                ((PaddlePowerUp) cell).usePU(null,player1.getPaddle());
+                            else if (ball.getBelongsTo()==1)
+                                ((PaddlePowerUp) cell).usePU(null,player2.getPaddle());
                         }
                         centerArea.destroyCell(i,j);
                     }
@@ -193,6 +201,7 @@ public class GameController implements Runnable, KeyListener {
                 randomAngle-=45;
             ball.setSpeed(ballSpeed,randomAngle);
             isMakeScore=false;
+            ball.setBelongsTo(-1);
         }
     }
 
