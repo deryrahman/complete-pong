@@ -27,7 +27,7 @@ public class Player {
     public void makeScore(){
         scores++;
     }
-
+    public void makeScore(int scores) { this.scores+=scores; }
     public void add(Object o){
         if(o instanceof Paddle)
             paddle = (Paddle) o;

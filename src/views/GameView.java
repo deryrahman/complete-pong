@@ -4,10 +4,7 @@ import models.Ball;
 import models.Board;
 import models.Paddle;
 import models.Player;
-import spawnplugins.BallPowerUp;
-import spawnplugins.BrickArea;
-import spawnplugins.CenterArea;
-import spawnplugins.PaddlePowerUp;
+import centerboard.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,7 +16,7 @@ public class GameView extends JFrame {
     private Ball ball;
     private Player[] players;
     private CenterArea centerArea;
-    private BrickArea brickArea;
+    private Brick brick;
     private BallPowerUp ballPowerUp;
     private PaddlePowerUp paddlePowerUp;
 
@@ -44,7 +41,7 @@ public class GameView extends JFrame {
 
         this.setBounds(x, y, WindowSize.width, WindowSize.height);
 
-//        File f = new File("src/spawnplugins");
+//        File f = new File("src/centerboard");
 //        String plugin_names[] = f.list();
 //        for (String name : plugin_names) {
 //            System.out.println(name);
@@ -59,6 +56,9 @@ public class GameView extends JFrame {
 
         Random rand = new Random();
         int randomAngle = rand.nextInt(360);
+        System.out.println(randomAngle);
+        while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
+            randomAngle-=45;
         ball = new Ball(width/2,height/2,10,6,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];
@@ -66,11 +66,7 @@ public class GameView extends JFrame {
         players[0].add(new Paddle(25,height/2,100));
         players[1] = new Player("Player 2");
         players[1].add(new Paddle(width-25,height/2,100));
-        centerArea = new CenterArea();
-        brickArea = new BrickArea();
-        ballPowerUp = new BallPowerUp();
-        paddlePowerUp = new PaddlePowerUp();
-
+        centerArea = new CenterArea(200,400);
 
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
@@ -91,7 +87,7 @@ public class GameView extends JFrame {
     }
 
     public CenterArea getCenterArea() { return centerArea; }
-    public BrickArea getBrickArea(){ return brickArea; }
+//    public Brick getBrickArea(){ return brickArea; }
     public BallPowerUp getBallPowerUp() { return ballPowerUp; }
     public PaddlePowerUp getPaddlePowerUp() { return paddlePowerUp; }
     public int getCanvasHeight(){ return canvasHeight; }
@@ -100,10 +96,13 @@ public class GameView extends JFrame {
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-            draw(g);
 //            g.drawString("Ball " + ball.toString(), 20, 30);
+            draw(g);
+            g.setColor(Color.WHITE);
             g.drawString("Player 1 : " + players[0].getScores(),20,30);
             g.drawString("Player 2 : " + players[1].getScores(),100,30);
+            g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,60);
+            g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,90);
         }
     }
 
@@ -123,19 +122,15 @@ public class GameView extends JFrame {
 
         for(int i = 0;i < 10;i++){
             for(int j = 0;j < 10;j++){
-                if (centerArea.getBrick(i,j)) {
-                    if (centerArea.getType(i,j) == 1) {
-                        g.setColor(brickArea.getColor());
-                    } else if (centerArea.getType(i,j) == 2) {
-                        g.setColor(paddlePowerUp.getColor());
-                    } else if (centerArea.getType(i,j) == 3) {
-                        g.setColor(ballPowerUp.getColor());
-                    }
+                Cell cell = centerArea.getCell(i,j);
+                if (cell!=null) {
+                    g.setColor(cell.getColor());
+
                     float minX, minY, brickLengthShow, brickWidthShow;
-                    minX = canvasWidth / 2 - centerArea.getWidth() / 2 + centerArea.getBrickWidth() * j + centerArea.getBrickBorder();
-                    minY = centerArea.getBrickLength() * i + centerArea.getBrickBorder();
-                    brickLengthShow = centerArea.getBrickLength() - 2 * centerArea.getBrickBorder();
-                    brickWidthShow = centerArea.getBrickWidth() - 2 * centerArea.getBrickBorder();
+                    minX = canvasWidth / 2 - centerArea.getWidth() / 2 + cell.getCellWidth() * j + cell.getCellBorder();
+                    minY = cell.getCellLength() * i + cell.getCellBorder();
+                    brickLengthShow = cell.getCellLength() - 2 * cell.getCellBorder();
+                    brickWidthShow = cell.getCellWidth() - 2 * cell.getCellBorder();
                     g.fillRect((int) (minX), (int) (minY), (int) brickWidthShow, (int) brickLengthShow);
                 }
             }
