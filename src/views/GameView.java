@@ -38,27 +38,16 @@ public class GameView extends JFrame {
         // Display in the center of the screen
         int x = screensize.width/2 - WindowSize.width/2;
         int y = screensize.height/2 - WindowSize.height/2;
-
         this.setBounds(x, y, WindowSize.width, WindowSize.height);
 
-//        File f = new File("src/centerboard");
-//        String plugin_names[] = f.list();
-//        for (String name : plugin_names) {
-//            System.out.println(name);
-//            try {
-//                Class c = Class.forName(name);
-//                Vector<Class> spawnPlugins = new Vector<>();
-//                spawnPlugins.add(c);
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
-//        }
-
+        // Get random angle
         Random rand = new Random();
         int randomAngle = rand.nextInt(360);
         System.out.println(randomAngle);
         while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
             randomAngle-=45;
+
+        // Model initiation
         ball = new Ball(width/2,height/2,10,6,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];
@@ -98,18 +87,24 @@ public class GameView extends JFrame {
             super.paintComponent(g);
 //            g.drawString("Ball " + ball.toString(), 20, 30);
             draw(g);
-            g.setColor(Color.WHITE);
-            g.drawString("Player 1 : " + players[0].getScores(),20,30);
-            g.drawString("Player 2 : " + players[1].getScores(),100,30);
-            g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,60);
-            g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,90);
         }
     }
 
     public void draw(Graphics g) {
+
+        // Board
         g.setColor(board.getColorFilled());
         g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
         g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+
+        // Scores
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Impact", Font.PLAIN, 100));
+        g.drawString(" " + players[0].getScores(),50,120);
+        g.drawString(" " + players[1].getScores(),canvasWidth-100-50,120);
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,canvasHeight-70);
+        g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,canvasHeight-50);
 
         g.setColor(ball.getColor());
         g.fillOval((int)(ball.getX()-ball.getRadius()),(int)(ball.getY()-ball.getRadius()),(int)(2*ball.getRadius()),(int)(2*ball.getRadius()));
