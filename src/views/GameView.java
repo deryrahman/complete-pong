@@ -53,6 +53,9 @@ public class GameView extends JFrame {
 
         Random rand = new Random();
         int randomAngle = rand.nextInt(360);
+        System.out.println(randomAngle);
+        while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
+            randomAngle-=45;
         ball = new Ball(width/2,height/2,10,6,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];

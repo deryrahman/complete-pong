@@ -180,6 +180,8 @@ public class GameController implements Runnable, KeyListener {
         if(keyEvent.getKeyCode() == KeyEvent.VK_SPACE && isMakeScore){
             Random rand = new Random();
             int randomAngle = rand.nextInt(360);
+            while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
+                randomAngle-=45;
             ball.setSpeed(ballSpeed,randomAngle);
             isMakeScore=false;
         }
