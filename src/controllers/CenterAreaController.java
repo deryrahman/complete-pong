@@ -1,9 +1,6 @@
 package controllers;
 
-import spawnplugins.BallPowerUp;
-import spawnplugins.Brick;
-import spawnplugins.CenterArea;
-import spawnplugins.PaddlePowerUp;
+import centerboard.CenterArea;
 import views.GameView;
 
 import java.util.Random;

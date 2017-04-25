@@ -4,7 +4,7 @@ import models.Ball;
 import models.Board;
 import models.Paddle;
 import models.Player;
-import spawnplugins.*;
+import centerboard.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,7 +41,7 @@ public class GameView extends JFrame {
 
         this.setBounds(x, y, WindowSize.width, WindowSize.height);
 
-//        File f = new File("src/spawnplugins");
+//        File f = new File("src/centerboard");
 //        String plugin_names[] = f.list();
 //        for (String name : plugin_names) {
 //            System.out.println(name);

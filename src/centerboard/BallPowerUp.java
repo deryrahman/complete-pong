@@ -1,29 +1,27 @@
-package spawnplugins;
+package centerboard;
 
 import models.Ball;
 import models.Paddle;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by Faiz Ghifari Haznitrama on 22/04/2017.
  */
 
-public class PaddlePowerUp extends Cell implements PowerUp {
+public class BallPowerUp extends Cell implements PowerUp {
     @Override
     public void usePU(Ball b, Paddle p) {
-        p.startTimer();
-        p.changeLength();
+        b.setSpeed((b.getSpeed()+1),b.getMoveAngle());
     }
 
     @Override
     public void spawn() {
-        type = PAD_POWERUP;
+        type = BALL_POWERUP;
     }
 
     @Override
     public Color getColor() {
-        return PAD_PU_COLOR;
+        return BALL_PU_COLOR;
     }
 }

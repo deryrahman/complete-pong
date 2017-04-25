@@ -2,9 +2,8 @@ package controllers;
 
 import models.Ball;
 import models.Board;
-import models.Paddle;
 import models.Player;
-import spawnplugins.*;
+import centerboard.*;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -71,14 +70,14 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player2.makeScore();
+            player2.makeScore(30);
             isMakeScore = true;
         } else if (ball.getX() > ballMaxX) {
             ball.reverseSpeedX();
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player1.makeScore();
+            player1.makeScore(30);
             isMakeScore = true;
         }
 
@@ -145,6 +144,12 @@ public class GameController implements Runnable, KeyListener {
                                 ((PaddlePowerUp) cell).usePU(null,player1.getPaddle());
                             else if (ball.getBelongsTo()==1)
                                 ((PaddlePowerUp) cell).usePU(null,player2.getPaddle());
+                        }
+                        if(cell instanceof Brick){
+                            if(ball.getBelongsTo()==0)
+                                player1.makeScore();
+                            else if(ball.getBelongsTo()==1)
+                                player2.makeScore();
                         }
                         centerArea.destroyCell(i,j);
                     }

@@ -1,7 +1,6 @@
-package spawnplugins;
+package centerboard;
 
 import java.awt.*;
-import java.util.Random;
 
 /**
  * Created by Faiz Ghifari Haznitrama on 22/04/2017.

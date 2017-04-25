@@ -1,4 +1,4 @@
-package spawnplugins;
+package centerboard;
 
 import models.Ball;
 import models.Paddle;

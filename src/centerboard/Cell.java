@@ -1,4 +1,4 @@
-package spawnplugins;
+package centerboard;
 
 import java.awt.*;
 
