@@ -26,7 +26,7 @@ public class GameView extends JFrame {
 
     private Dimension WindowSize;
 
-    public GameView(int width, int height){
+    public GameView(int width, int height, String player1, String player2){
         super("Complete Pong!");
         canvasWidth = width;
         canvasHeight = height+30;
@@ -51,9 +51,9 @@ public class GameView extends JFrame {
         ball = new Ball(width/2,height/2,10,6,randomAngle);
         board = new Board(0,0,width,height);
         players = new Player[2];
-        players[0] = new Player("Player 1");
+        players[0] = new Player(player1);
         players[0].add(new Paddle(25,height/2,100));
-        players[1] = new Player("Player 2");
+        players[1] = new Player(player2);
         players[1].add(new Paddle(width-25,height/2,100));
         centerArea = new CenterArea(200,400);
 
@@ -62,6 +62,14 @@ public class GameView extends JFrame {
         this.add(canvas, BorderLayout.CENTER);
         this.requestFocusInWindow(true);
         this.requestFocus();
+        //this.setVisible(true);
+    }
+
+    public GameView(int width, int height) {
+        this(width, height, "Player 1", "Player2");
+    }
+
+    public void play(){
         this.setVisible(true);
     }
 
