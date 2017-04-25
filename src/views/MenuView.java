@@ -155,7 +155,6 @@ public class MenuView extends JFrame{
                 String data = playerName1.getText();
                 data += " Vs " + playerName2.getText();
                 statusLabelMulti.setText(data);
-                System.out.println(data);
             }
         });
         statusLabelMulti = new JLabel("");
@@ -190,6 +189,18 @@ public class MenuView extends JFrame{
         g.drawRect(0,0,sizeX, sizeY);
     }
 
+    public String getPlayer1() {
+        return playerName1.getText();
+    }
+
+    public String getPlayer2() {
+        return playerName2.getText();
+    }
+
+    public String getPlayerBot() {
+        return playerName.getText();
+    }
+
     public static void main( String args[] ){
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
@@ -197,6 +208,7 @@ public class MenuView extends JFrame{
         // Create an instance of the test application
         MenuView mainFrame = new MenuView(1200,400);
         mainFrame.view();
+        System.out.println(mainFrame.getPlayer1());
         //System.out.println("selesai");
     }
 
