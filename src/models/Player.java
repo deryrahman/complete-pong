@@ -1,12 +1,19 @@
 package models;
 
+import nameformat.InvalidNameFormatException;
+import nameformat.InvalidNameFormatExceptionCode;
+
 public class Player {
     private Paddle paddle;
     private int scores;
     private String playerName;
 
     public Player(String playerName){
-        this.playerName = playerName;
+        try {
+            validateName(playerName);
+        } catch (InvalidNameFormatException e) {
+            System.out.println(e.getMessage());
+        }
         scores = 0;
     }
 
@@ -31,5 +38,18 @@ public class Player {
     public void add(Object o){
         if(o instanceof Paddle)
             paddle = (Paddle) o;
+    }
+
+    private void validateName(String name) throws InvalidNameFormatException{
+
+        if(name.length()==0)
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_ZERO_LENGTH);
+        if(name.length()>10)
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_MAXIMUM);
+        if (name.matches("[a-zA-Z]+")){
+            this.playerName = name;
+        } else {
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_NOT_STRING);
+        }
     }
 }
