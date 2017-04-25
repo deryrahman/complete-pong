@@ -1,11 +1,13 @@
 package controllers;
 
+import models.Ball;
 import models.Player;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
+import java.util.Random;
 
 /**
  * PlayerController class as controller for Player class
@@ -23,10 +25,6 @@ public class PlayerController implements Runnable, KeyListener{
      * define player that's controlled
      */
     private Player player;
-
-    /**
-     * player identity using number
-     */
     private int playerNumber;
 
     /**
@@ -34,11 +32,6 @@ public class PlayerController implements Runnable, KeyListener{
      * based on canvas size
      */
     private int canvasHeight;
-
-    /**
-     * thread specially responsible for players to implements
-     * multithreading by concurrency
-     */
     private Thread t;
 
     /**
@@ -51,6 +44,8 @@ public class PlayerController implements Runnable, KeyListener{
         player = gameView.getPlayers()[i];
         playerNumber=i;
         canvasHeight = gameView.getCanvasHeight();
+        canvasWidth = gameView.getCanvasWidth();
+        ball = gameView.getBall();
         gameView.addKeyListener(this);
     }
 
@@ -73,6 +68,30 @@ public class PlayerController implements Runnable, KeyListener{
                     player.getPaddle().setY((int) (canvasHeight-player.getPaddle().getLength()/2));
             else {
                 player.getPaddle().updateMove();
+            }
+
+            player.getPaddle().changeLength();
+
+            if(playerNumber==0){
+                if((ball.getX()<canvasWidth/2 && playerNumber==0) || (ball.getX()>canvasWidth/2 && playerNumber==1)) {
+                    Random rand = new Random();
+                    int rd = rand.nextInt(5);
+                    if (rd == 0) rd = 5;
+                    float minYPad = player.getPaddle().getY() - player.getPaddle().getLength() / 2;
+                    float maxYPad = player.getPaddle().getY() + player.getPaddle().getLength() / 2;
+                    if (minYPad + player.getPaddle().getLength() / rd < ball.getY())
+                        player.getPaddle().setSpeedY(4);
+                    else if (maxYPad - player.getPaddle().getLength() / rd > ball.getY())
+                        player.getPaddle().setSpeedY(-4);
+                    else
+                        player.getPaddle().setSpeedY(0);
+                } else {
+                    if(player.getPaddle().getY()>canvasHeight/2){
+                        player.getPaddle().setSpeedY(-4);
+                    } else {
+                        player.getPaddle().setSpeedY(4);
+                    }
+                }
             }
             try{
                 Thread.sleep(1000 / UPDATE_RATE);
