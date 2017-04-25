@@ -1,23 +1,29 @@
 package controllers;
 
+import models.Ball;
 import models.Player;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
+import java.util.Random;
 
 public class PlayerController implements Runnable, KeyListener{
     private static final int UPDATE_RATE = 100;
     private Player player;
+    private Ball ball;
     private int playerNumber;
     private int canvasHeight;
+    private int canvasWidth;
     private Thread t;
 
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
         playerNumber=i;
         canvasHeight = gameView.getCanvasHeight();
+        canvasWidth = gameView.getCanvasWidth();
+        ball = gameView.getBall();
         gameView.addKeyListener(this);
     }
 
@@ -33,6 +39,27 @@ public class PlayerController implements Runnable, KeyListener{
                     player.getPaddle().setY((int) (canvasHeight-player.getPaddle().getLength()/2));
             else {
                 player.getPaddle().updateMove();
+            }
+            if(playerNumber==0){
+                if((ball.getX()<canvasWidth/2 && playerNumber==0) || (ball.getX()>canvasWidth/2 && playerNumber==1)) {
+                    Random rand = new Random();
+                    int rd = rand.nextInt(5);
+                    if (rd == 0) rd = 5;
+                    float minYPad = player.getPaddle().getY() - player.getPaddle().getLength() / 2;
+                    float maxYPad = player.getPaddle().getY() + player.getPaddle().getLength() / 2;
+                    if (minYPad + player.getPaddle().getLength() / rd < ball.getY())
+                        player.getPaddle().setSpeedY(4);
+                    else if (maxYPad - player.getPaddle().getLength() / rd > ball.getY())
+                        player.getPaddle().setSpeedY(-4);
+                    else
+                        player.getPaddle().setSpeedY(0);
+                } else {
+                    if(player.getPaddle().getY()>canvasHeight/2){
+                        player.getPaddle().setSpeedY(-4);
+                    } else {
+                        player.getPaddle().setSpeedY(4);
+                    }
+                }
             }
             try{
                 Thread.sleep(1000 / UPDATE_RATE);

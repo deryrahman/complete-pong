@@ -20,7 +20,7 @@ public class BrickAreaController implements Runnable {
         while(true){
             brickArea.spawn();
             try {
-                Thread.sleep(100000 / UPDATE_RATE);
+                Thread.sleep(200000 / UPDATE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
