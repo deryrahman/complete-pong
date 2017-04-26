@@ -9,15 +9,56 @@ import java.awt.event.KeyListener;
 import java.security.Key;
 import java.util.Random;
 
+/**
+ * PlayerController class as controller for Player class
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
+ */
 public class PlayerController implements Runnable, KeyListener{
+    /**
+     * define the update rate as constant
+     */
     private static final int UPDATE_RATE = 100;
+
+    /**
+     * define player that's controlled
+     */
     private Player player;
-    private Ball ball;
+
+    /**
+     * number of player as player identity
+     */
     private int playerNumber;
+
+    /**
+     * information about canvas height to limit paddle movement
+     * based on canvas size
+     */
     private int canvasHeight;
+
+    /**
+     * information about canvas width to limit paddle movement
+     * based on canvas size
+     */
     private int canvasWidth;
+
+    /**
+     * Ball object used to knowing the last player hit by the ball
+     */
+    private Ball ball;
+
+    /**
+     * Thread used for multiprogramming with concurrency
+     */
     private Thread t;
 
+    /**
+     * PlayerController constructor, initialized based on objects
+     * on view class
+     * @param gameView = source
+     * @param i = player identifier
+     */
     public PlayerController(GameView gameView, int i){
         player = gameView.getPlayers()[i];
         playerNumber=i;
@@ -27,6 +68,13 @@ public class PlayerController implements Runnable, KeyListener{
         gameView.addKeyListener(this);
     }
 
+    /**
+     * override run method fron runnable
+     * give sign to thread to run
+     * <p>
+     * responsible on every actions done by player
+     * e.g. paddle movement
+     */
     @Override
     public void run() {
         while (true){
@@ -72,10 +120,20 @@ public class PlayerController implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * Override keyTyped method from runnable
+     * control actions when key typed
+     * @param keyEvent= key that being type
+     */
     @Override
     public void keyTyped(KeyEvent keyEvent) {
     }
 
+    /**
+     * Override keyPressed method from runnable
+     * control actions when key pressed
+     * @param keyEvent = key that being pressed
+     */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
 //        System.out.println(keyEvent.getKeyCode());
@@ -100,6 +158,11 @@ public class PlayerController implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * Override keyPressed method from runnable
+     * control actions when key pressed
+     * @param keyEvent = key that being released
+     */
     @Override
     public void keyReleased(KeyEvent keyEvent) {
         float direction = -player.getPaddle().getSpeedY();
@@ -111,6 +174,9 @@ public class PlayerController implements Runnable, KeyListener{
         }
     }
 
+    /**
+     * Constructor for thread and ask thread to start
+     */
     public void start(){
         if(t==null){
             t = new Thread(this);

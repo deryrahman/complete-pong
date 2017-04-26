@@ -57,6 +57,13 @@ public class GameView extends JFrame {
         players[1].add(new Paddle(width-25,height/2,100));
         centerArea = new CenterArea(200,400);
 
+        // Assertion check
+        assert (ball.getSpeed()<10);
+        for(Player player:players)
+            assert (player.getPaddle().getLength()<height);
+        assert (width<WindowSize.width);
+        assert (height<WindowSize.height);
+
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
         this.add(canvas, BorderLayout.CENTER);
