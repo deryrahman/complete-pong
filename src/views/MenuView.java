@@ -338,20 +338,4 @@ public class MenuView extends JFrame{
     public String getPlayerBot() {
         return namaPlayerBot;
     }
-
-    /**
-     * Start main menu. First appear on program
-     * @param args = arguments
-     */
-    public static void main( String args[] ){
-        try {
-            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception evt) {}
-        // Create an instance of the test application
-        //MenuView mainFrame = new MenuView(1200,400);
-        //mainFrame.view();
-        //System.out.println(mainFrame.getPlayer1());
-        //System.out.println("selesai");
-    }
-
 }
