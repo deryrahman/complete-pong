@@ -8,9 +8,15 @@ import java.awt.*;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created by Rahman on 4/25/2017.
+ * JUnit for unit test. Test Ball Class
+ * @author Abdurrahman <13515024@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
  */
 public class BallTest {
+    /**
+     * initialize ball
+     */
     Ball ball= new Ball(2,3,1, 5, 200, Color.BLACK);
     @Test
     public void constructorTest() {
@@ -21,6 +27,10 @@ public class BallTest {
         assertTrue(ball.getSpeedY()== -5* (float)Math.sin(Math.toRadians(200)));
         assertTrue(ball.getColor()==Color.black);
     }
+
+    /**
+     * method test
+     */
     @Test
     public void setterTest() {
         ball.setX(5);

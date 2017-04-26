@@ -1,11 +1,11 @@
-package centerboard;
+package models.centerboard;
 
 import java.awt.*;
 
 /**
  * Cell Class as model abstract class for all other classes
- * on package centerboard. Responsible for all member used
- * by all classes on package centerboard
+ * on package models.centerboard. Responsible for all member used
+ * by all classes on package models.centerboard
  * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
  * @version 1.0
  * @since 1.0
@@ -33,7 +33,7 @@ public abstract class Cell {
     protected int cellBorder = 2;
 
     /**
-     * default color for all object on package centerboard
+     * default color for all object on package models.centerboard
      */
     public static final Color DEFAULT_COLOR = Color.BLACK;
 
@@ -74,7 +74,7 @@ public abstract class Cell {
 
     /**
      * abstract method spawn, implemented by all real classes
-     * on package centerboard for spawning objects
+     * on package models.centerboard for spawning objects
      */
     abstract public void spawn();
 
@@ -83,13 +83,6 @@ public abstract class Cell {
      * @return object's color
      */
     abstract public Color getColor();
-
-    /**
-     * destroy object on that place
-     */
-    public void destroy(){
-        type = NO_BRICK;
-    }
 
     /**
      * return cell length

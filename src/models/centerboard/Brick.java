@@ -1,4 +1,4 @@
-package centerboard;
+package models.centerboard;
 
 import java.awt.*;
 

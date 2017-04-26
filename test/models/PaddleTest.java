@@ -7,10 +7,20 @@ import java.awt.*;
 import static org.junit.Assert.*;
 
 /**
- * Created by Rahman on 4/25/2017.
+ * JUnit for unit test. Test Paddle Class
+ * @author Abdurrahman <13515024@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
  */
 public class PaddleTest {
+    /**
+     * initialize paddle
+     */
     Paddle paddle = new Paddle(4,6,3, Color.BLACK);
+
+    /**
+     * constructor test
+     */
     @Test
     public void constructorTest() {
         assertTrue(paddle.getX()==4);
@@ -20,6 +30,10 @@ public class PaddleTest {
         assertTrue(paddle.getWidth()==10);
         assertTrue(paddle.getColor()==Color.BLACK);
     }
+
+    /**
+     * method test
+     */
     @Test
     public void setterTest() {
         paddle.setSpeedY(2);

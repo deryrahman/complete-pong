@@ -35,6 +35,7 @@ public class Player {
             validateName(playerName);
         } catch (InvalidNameFormatException e) {
             System.out.println(e.getMessage());
+            System.exit(0);
         }
         scores = 0;
     }

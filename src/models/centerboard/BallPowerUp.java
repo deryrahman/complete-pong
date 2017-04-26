@@ -1,4 +1,4 @@
-package centerboard;
+package models.centerboard;
 
 import models.Ball;
 import models.Paddle;

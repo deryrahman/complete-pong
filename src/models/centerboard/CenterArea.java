@@ -1,10 +1,10 @@
-package centerboard;
+package models.centerboard;
 
 import java.util.Random;
 
 /**
  * Center Area Class as model class to provide area
- * for centerboard objects to spawn itself
+ * for models.centerboard objects to spawn itself
  * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
  * @version 1.0
  * @since 1.0
@@ -29,12 +29,12 @@ public class CenterArea {
     /**
      * define vertical zone provided by cell
      */
-    protected int matrixHeight=10;
+    protected int matrixHeight;
 
     /**
      * define horizontal zone provided by cell
      */
-    protected int matrixWidth=10;
+    protected int matrixWidth;
 
     /**
      * CenterArea constructor, initialize area
@@ -44,6 +44,8 @@ public class CenterArea {
     public CenterArea(int width, int height) {
         this.width=width;
         this.height=height;
+        matrixHeight = height/40;
+        matrixWidth = width/20;
         cell = new Cell[matrixHeight][matrixWidth];
         for(int i = 0; i < matrixHeight; i++){
             cell[i] = new Cell[matrixWidth];
@@ -66,6 +68,17 @@ public class CenterArea {
     public float getWidth() { return width; }
 
     /**
+     * get matrix height
+     * @return height of matrix
+     */
+    public int getMatrixHeight() { return matrixHeight; }
+
+    /**
+     * get matrix width
+     * @return width of matrix
+     */
+    public int getMatrixWidth() {return matrixWidth;}
+    /**
      * get object on place (i,j)
      * @param i = horizontal
      * @param j = vertical
@@ -80,8 +93,8 @@ public class CenterArea {
     public void setRandomCell(int type) {
         int i, j;
         Random rand = new Random();
-        i = rand.nextInt(10);
-        j = rand.nextInt(10);
+        i = rand.nextInt(matrixHeight);
+        j = rand.nextInt(matrixWidth);
         if(cell[i][j]==null) {
             if (type == Cell.BRICK) {
                 cell[i][j] = new Brick();

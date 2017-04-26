@@ -85,9 +85,13 @@ public class PlayPong {
         player1.start();
         player2.start();
         gameController.start();
+
+        // Initial assertion check
+        assertionCheck(gameView);
+
         gameView.play();
 
-        // Assertion check
+        // Final assertion check
         assertionCheck(gameView);
     }
 

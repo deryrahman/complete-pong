@@ -6,7 +6,6 @@ import views.GameView;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
 import java.util.Random;
 
 /**
@@ -78,44 +77,62 @@ public class PlayerController implements Runnable, KeyListener{
     @Override
     public void run() {
         while (true){
-            float minYPaddle = player.getPaddle().getY()-player.getPaddle().getLength()/2;
-            float maxYPaddle = player.getPaddle().getY()+player.getPaddle().getLength()/2;
-            if(minYPaddle<0 || maxYPaddle>canvasHeight)
-                if(minYPaddle<0)
-                    player.getPaddle().setY((int) (player.getPaddle().getLength()/2));
-                if(maxYPaddle>canvasHeight)
-                    player.getPaddle().setY((int) (canvasHeight-player.getPaddle().getLength()/2));
-            else {
-                player.getPaddle().updateMove();
-            }
 
+            // update paddle move
+            movePaddle();
+
+            // paddle length
             player.getPaddle().changeLength();
 
-            if(playerNumber==0 && player.getPlayerName()=="Bot"){
-                if((ball.getX()<canvasWidth/2 && playerNumber==0) || (ball.getX()>canvasWidth/2 && playerNumber==1)) {
-                    Random rand = new Random();
-                    int rd = rand.nextInt(5);
-                    if (rd == 0) rd = 5;
-                    float minYPad = player.getPaddle().getY() - player.getPaddle().getLength() / 2;
-                    float maxYPad = player.getPaddle().getY() + player.getPaddle().getLength() / 2;
-                    if (minYPad + player.getPaddle().getLength() / rd < ball.getY())
-                        player.getPaddle().setSpeedY(4);
-                    else if (maxYPad - player.getPaddle().getLength() / rd > ball.getY())
-                        player.getPaddle().setSpeedY(-4);
-                    else
-                        player.getPaddle().setSpeedY(0);
-                } else {
-                    if(player.getPaddle().getY()>canvasHeight/2){
-                        player.getPaddle().setSpeedY(-4);
-                    } else {
-                        player.getPaddle().setSpeedY(4);
-                    }
-                }
+            // move bot
+            if(playerNumber==0 && player.getPlayerName().equals("Bot")){
+                botMove();
             }
             try{
                 Thread.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * update paddle movement by position and speed
+     */
+    private void movePaddle() {
+        float minYPaddle = player.getPaddle().getY()-player.getPaddle().getLength()/2;
+        float maxYPaddle = player.getPaddle().getY()+player.getPaddle().getLength()/2;
+        if(minYPaddle<0 || maxYPaddle>canvasHeight)
+            if(minYPaddle<0)
+                player.getPaddle().setY((int) (player.getPaddle().getLength()/2));
+        if(maxYPaddle>canvasHeight)
+            player.getPaddle().setY((int) (canvasHeight-player.getPaddle().getLength()/2));
+        else {
+            player.getPaddle().updateMove();
+        }
+    }
+
+    /**
+     * update bot movement
+     */
+    private void botMove() {
+        if(ball.getX()<canvasWidth/2) {
+            Random rand = new Random();
+            int rd = rand.nextInt(5);
+            if (rd == 0) rd = 5;
+            float minYPad = player.getPaddle().getY() - player.getPaddle().getLength() / 2;
+            float maxYPad = player.getPaddle().getY() + player.getPaddle().getLength() / 2;
+            if (minYPad + player.getPaddle().getLength() / rd < ball.getY())
+                player.getPaddle().setSpeedY(4);
+            else if (maxYPad - player.getPaddle().getLength() / rd > ball.getY())
+                player.getPaddle().setSpeedY(-4);
+            else
+                player.getPaddle().setSpeedY(0);
+        } else {
+            if(player.getPaddle().getY()>canvasHeight/2){
+                player.getPaddle().setSpeedY(-4);
+            } else {
+                player.getPaddle().setSpeedY(4);
             }
         }
     }
