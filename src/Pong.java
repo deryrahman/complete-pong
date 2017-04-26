@@ -8,6 +8,8 @@ public class Pong {
         // activate openGL on linux
         System.setProperty("sun.java2d.opengl", "true");
 
+
+
         GameView gameView = new GameView(1200,400);
         GameController gameController = new GameController(gameView);
         CenterAreaController brickAreaController = new CenterAreaController(gameView);

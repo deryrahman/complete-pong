@@ -73,6 +73,9 @@ public class MenuView extends JFrame{
         this.setSize(sizeX,sizeY);
         this.requestFocusInWindow(true);
         this.pack();
+    }
+
+    public void view() {
         this.setVisible( true );
     }
 
@@ -193,7 +196,7 @@ public class MenuView extends JFrame{
         } catch (Exception evt) {}
         // Create an instance of the test application
         MenuView mainFrame = new MenuView(1200,400);
-
+        mainFrame.view();
     }
 
 }
