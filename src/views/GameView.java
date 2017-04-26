@@ -73,11 +73,15 @@ public class GameView extends JFrame {
         this.add(canvas, BorderLayout.CENTER);
         this.requestFocusInWindow(true);
         this.requestFocus();
-        this.setVisible(true);
+        //this.setVisible(true);
     }
 
     public GameView(int width, int height) {
         this(width, height, "Player 1", "Player2");
+    }
+
+    public void play(){
+        this.setVisible(true);
     }
 
     public Ball getBall(){

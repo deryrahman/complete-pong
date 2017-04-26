@@ -103,6 +103,7 @@ public class MenuView extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 String data = "Username " + playerName.getText();
                 statusLabelBot.setText(data);
+                System.out.println(data);
             }
         });
         statusLabelBot = new JLabel("");
@@ -146,7 +147,6 @@ public class MenuView extends JFrame{
         playerLabel2 = new JLabel("Player 2 : ");
         playerLabel2.setForeground(Color.WHITE);
 
-
         playMultiButton = new JButton("Play with friend");
         playMultiButton.setBackground(Color.BLACK);
         playMultiButton.setForeground(Color.WHITE);
@@ -155,6 +155,7 @@ public class MenuView extends JFrame{
                 String data = playerName1.getText();
                 data += " Vs " + playerName2.getText();
                 statusLabelMulti.setText(data);
+                System.out.println(data);
             }
         });
         statusLabelMulti = new JLabel("");
@@ -177,7 +178,6 @@ public class MenuView extends JFrame{
     }
 
     class DrawCanvas extends JPanel{
-
         public void paintComponent(Graphics g){
             super.paintComponent(g);
             draw(g);
@@ -197,6 +197,7 @@ public class MenuView extends JFrame{
         // Create an instance of the test application
         MenuView mainFrame = new MenuView(1200,400);
         mainFrame.view();
+        //System.out.println("selesai");
     }
 
 }
