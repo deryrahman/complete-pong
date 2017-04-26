@@ -83,6 +83,12 @@ public class Player {
     }
 
     /**
+     * add player's score by param
+     * @param scores = scores added
+     */
+    public void makeScore(int scores) { this.scores+=scores; }
+    
+    /**
      * add a new object for player, used by paddle
      * @param o = new object
      */
