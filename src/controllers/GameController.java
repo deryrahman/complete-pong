@@ -170,14 +170,14 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player2.makeScore(30);
+            player2.makeScore(5);
             isMakeScore = true;
         } else if (ball.getX() > ballMaxX) {
             ball.reverseSpeedX();
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player1.makeScore(30);
+            player1.makeScore(5);
             isMakeScore = true;
         }
 
@@ -292,12 +292,14 @@ public class GameController implements Runnable, KeyListener {
         while(true){
             moveBall();
             updatePaint();
+            if(player1.getScores()>=30 || player2.getScores()>=30 ) break;
             try {
                 Thread.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
+        updatePaint();
     }
 
     /**

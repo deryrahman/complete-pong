@@ -88,8 +88,37 @@ public class GameView extends JFrame {
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-            draw(g);
+            if(players[0].getScores()>=30 || players[1].getScores()>=30)
+                showWinner(g);
+            else
+                draw(g);
         }
+    }
+
+    public void showWinner(Graphics g){
+        String winner = "WINNER!";
+        int scoreWinner;
+        String playerWinner;
+        if(players[0].getScores()>players[1].getScores()){
+            scoreWinner = players[0].getScores();
+            playerWinner = players[0].getPlayerName();
+        } else {
+            scoreWinner = players[1].getScores();
+            playerWinner = players[1].getPlayerName();
+        }
+        String showWinner = playerWinner + " : " + scoreWinner;
+
+        // Board
+        g.setColor(board.getColorFilled());
+        g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+        g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+
+        // Scores and Player name
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Impact", Font.PLAIN, 100));
+        g.drawString(winner,canvasWidth/2-winner.length()*100/2,150);
+        g.setFont(new Font("Impact", Font.PLAIN, 75));
+        g.drawString(showWinner,canvasWidth/2-showWinner.length()*75/2,260);
     }
 
     public void draw(Graphics g) {
