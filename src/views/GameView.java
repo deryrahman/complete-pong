@@ -59,6 +59,7 @@ public class GameView extends JFrame {
 
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
+        this.setMinimumSize(new Dimension(canvasWidth,canvasHeight));
         this.add(canvas, BorderLayout.CENTER);
         this.requestFocusInWindow(true);
         this.requestFocus();
@@ -105,11 +106,15 @@ public class GameView extends JFrame {
         g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
         g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
 
-        // Scores
+        // Scores and Player name
         g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Impact", Font.PLAIN, 25));
+        g.drawString(" " + players[0].getPlayerName(),50,40);
+        g.drawString(" " + players[1].getPlayerName(),canvasWidth-100-50,40);
         g.setFont(new Font("Impact", Font.PLAIN, 100));
-        g.drawString(" " + players[0].getScores(),50,120);
-        g.drawString(" " + players[1].getScores(),canvasWidth-100-50,120);
+        g.drawString(" " + players[0].getScores(),50,160);
+        g.drawString(" " + players[1].getScores(),canvasWidth-100-50,160);
+
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,canvasHeight-70);
         g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,canvasHeight-50);
