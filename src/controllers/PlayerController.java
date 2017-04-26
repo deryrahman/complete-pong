@@ -91,7 +91,7 @@ public class PlayerController implements Runnable, KeyListener{
 
             player.getPaddle().changeLength();
 
-            if(playerNumber==0){
+            if(playerNumber==0 && player.getPlayerName()=="Bot"){
                 if((ball.getX()<canvasWidth/2 && playerNumber==0) || (ball.getX()>canvasWidth/2 && playerNumber==1)) {
                     Random rand = new Random();
                     int rd = rand.nextInt(5);

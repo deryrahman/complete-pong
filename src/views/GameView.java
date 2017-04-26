@@ -1,5 +1,6 @@
 package views;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import models.Ball;
 import models.Board;
 import models.Paddle;
@@ -11,14 +12,14 @@ import java.awt.*;
 import java.util.Random;
 
 public class GameView extends JFrame {
+    // Constant
+    public final int MAX_SCORES = 30;
+
     // model
     private Board board;
     private Ball ball;
     private Player[] players;
     private CenterArea centerArea;
-    private Brick brick;
-    private BallPowerUp ballPowerUp;
-    private PaddlePowerUp paddlePowerUp;
 
     private DrawCanvas canvas;
     private int canvasWidth;
@@ -57,13 +58,6 @@ public class GameView extends JFrame {
         players[1].add(new Paddle(width-25,height/2,100));
         centerArea = new CenterArea(200,400);
 
-        // Assertion check
-        assert (ball.getSpeed()<10);
-        for(Player player:players)
-            assert (player.getPaddle().getLength()<height);
-        assert (width<WindowSize.width);
-        assert (height<WindowSize.height);
-
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
         this.setMinimumSize(new Dimension(canvasWidth,canvasHeight));
@@ -71,10 +65,6 @@ public class GameView extends JFrame {
         this.requestFocusInWindow(true);
         this.requestFocus();
         //this.setVisible(true);
-    }
-
-    public GameView(int width, int height) {
-        this(width, height, "Player 1", "Player2");
     }
 
     public void play(){
@@ -90,30 +80,56 @@ public class GameView extends JFrame {
     public Player[] getPlayers(){
         return players;
     }
+    public boolean isHasWinner() { return players[0].getScores()>=MAX_SCORES || players[1].getScores()>=MAX_SCORES; }
 
     public CenterArea getCenterArea() { return centerArea; }
-//    public Brick getBrickArea(){ return brickArea; }
-    public BallPowerUp getBallPowerUp() { return ballPowerUp; }
-    public PaddlePowerUp getPaddlePowerUp() { return paddlePowerUp; }
     public int getCanvasHeight(){ return canvasHeight; }
     public int getCanvasWidth(){ return canvasWidth; }
 
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-//            g.drawString("Ball " + ball.toString(), 20, 30);
-            draw(g);
+            if(isHasWinner())
+                showWinner(g);
+            else
+                draw(g);
         }
     }
 
-    public void draw(Graphics g) {
+    public void showWinner(Graphics g){
+        // Show Winner
+        String winner = "WINNER!";
+        int scoreWinner;
+        String playerWinner;
+        if(players[0].getScores()>players[1].getScores()){
+            scoreWinner = players[0].getScores();
+            playerWinner = players[0].getPlayerName();
+        } else {
+            scoreWinner = players[1].getScores();
+            playerWinner = players[1].getPlayerName();
+        }
+        String showWinner = playerWinner + " : " + scoreWinner;
 
         // Board
-        g.setColor(board.getColorFilled());
-        g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
-        g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+        drawBoard(g);
 
         // Scores and Player name
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Impact", Font.PLAIN, 100));
+        g.drawString(winner,canvasWidth/2-winner.length()*100/2,150);
+        g.setFont(new Font("Impact", Font.PLAIN, 75));
+        g.drawString(showWinner,canvasWidth/2-showWinner.length()*75/2,260);
+    }
+
+    private void drawBoard(Graphics g){
+        int boardWidth = board.getMaxX() - board.getMinX() - 1;
+        int boardHeight = board.getMaxY() - board.getMinY() - 1;
+        g.setColor(board.getColorFilled());
+        g.fillRect(board.getMinX(), board.getMinY(), boardWidth, boardHeight);
+        g.drawRect(board.getMinX(), board.getMinY(), boardWidth, boardHeight);
+    }
+
+    private void drawPlayerStatus(Graphics g){
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Impact", Font.PLAIN, 25));
         g.drawString(" " + players[0].getPlayerName(),50,40);
@@ -125,22 +141,35 @@ public class GameView extends JFrame {
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,canvasHeight-70);
         g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,canvasHeight-50);
+        g.drawString("Movement 1 : " + players[0].getPaddle().getY(),canvasWidth/2-150,canvasHeight-50);
+        g.drawString("Movement 2 : " + players[1].getPaddle().getY(),canvasWidth/2,canvasHeight-50);
+    }
 
+    private void drawBall(Graphics g){
         g.setColor(ball.getColor());
         g.fillOval((int)(ball.getX()-ball.getRadius()),(int)(ball.getY()-ball.getRadius()),(int)(2*ball.getRadius()),(int)(2*ball.getRadius()));
 
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString("Ball speed : "+ball.getSpeed(),canvasWidth-150,canvasHeight-90);
+        g.drawString("Ball x : "+ball.getX(),canvasWidth-150,canvasHeight-70);
+        g.drawString("Ball y : "+ball.getY(),canvasWidth-150,canvasHeight-50);
+    }
+
+    private void drawPaddle(Graphics g){
         for(Player player : players){
             Paddle paddle = player.getPaddle();
             g.setColor(paddle.getColor());
             g.fillRect((int)(paddle.getX()-paddle.getWidth()/2),(int)(paddle.getY()-paddle.getLength()/2),(int)paddle.getWidth(),(int)paddle.getLength());
         }
+    }
 
+    private void drawCenterArea(Graphics g){
         for(int i = 0;i < 10;i++){
             for(int j = 0;j < 10;j++){
                 Cell cell = centerArea.getCell(i,j);
                 if (cell!=null) {
                     g.setColor(cell.getColor());
-
                     float minX, minY, brickLengthShow, brickWidthShow;
                     minX = canvasWidth / 2 - centerArea.getWidth() / 2 + cell.getCellWidth() * j + cell.getCellBorder();
                     minY = cell.getCellLength() * i + cell.getCellBorder();
@@ -150,5 +179,22 @@ public class GameView extends JFrame {
                 }
             }
         }
+    }
+
+    public void draw(Graphics g) {
+        // Board
+        drawBoard(g);
+
+        // Scores and Player name
+        drawPlayerStatus(g);
+
+        // Ball
+        drawBall(g);
+
+        // Paddle
+        drawPaddle(g);
+
+        // Center area
+        drawCenterArea(g);
     }
 }
