@@ -16,9 +16,6 @@ public class GameView extends JFrame {
     private Ball ball;
     private Player[] players;
     private CenterArea centerArea;
-    private Brick brick;
-    private BallPowerUp ballPowerUp;
-    private PaddlePowerUp paddlePowerUp;
 
     private DrawCanvas canvas;
     private int canvasWidth;
@@ -57,13 +54,6 @@ public class GameView extends JFrame {
         players[1].add(new Paddle(width-25,height/2,100));
         centerArea = new CenterArea(200,400);
 
-        // Assertion check
-        assert (ball.getSpeed()<10);
-        for(Player player:players)
-            assert (player.getPaddle().getLength()<height);
-        assert (width<WindowSize.width);
-        assert (height<WindowSize.height);
-
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
         this.add(canvas, BorderLayout.CENTER);
@@ -91,16 +81,12 @@ public class GameView extends JFrame {
     }
 
     public CenterArea getCenterArea() { return centerArea; }
-//    public Brick getBrickArea(){ return brickArea; }
-    public BallPowerUp getBallPowerUp() { return ballPowerUp; }
-    public PaddlePowerUp getPaddlePowerUp() { return paddlePowerUp; }
     public int getCanvasHeight(){ return canvasHeight; }
     public int getCanvasWidth(){ return canvasWidth; }
 
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-//            g.drawString("Ball " + ball.toString(), 20, 30);
             draw(g);
         }
     }
