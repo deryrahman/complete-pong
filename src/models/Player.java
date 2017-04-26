@@ -1,5 +1,17 @@
 package models;
 
+import nameformat.InvalidNameFormatException;
+import nameformat.InvalidNameFormatExceptionCode;
+
+
+/**
+ * Player class as model for player in-game
+ * Any information and object used by player
+ * is provided and be responsible here
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
+ */
 public class Player {
     /**
      * Paddle that player uses to play
