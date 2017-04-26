@@ -107,18 +107,6 @@ public class GameController implements Runnable, KeyListener {
      * define special area for powerups and bricks
      */
     private CenterArea centerArea;
-    /**
-     * define bricks
-     */
-    private Brick brickArea;
-    /**
-     * define ball power up
-     */
-    private BallPowerUp ballPowerUp;
-    /**
-     * define paddle power up
-     */
-    private PaddlePowerUp paddlePowerUp;
     // view
     /**
      * define the source from package view
@@ -292,7 +280,7 @@ public class GameController implements Runnable, KeyListener {
         while(true){
             moveBall();
             updatePaint();
-            if(player1.getScores()>=30 || player2.getScores()>=30 ) break;
+            if(gameView.isHasWinner()) break;
             try {
                 Thread.sleep(1000 / UPDATE_RATE);
             } catch (InterruptedException e) {

@@ -1,5 +1,6 @@
 package views;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import models.Ball;
 import models.Board;
 import models.Paddle;
@@ -11,6 +12,9 @@ import java.awt.*;
 import java.util.Random;
 
 public class GameView extends JFrame {
+    // Constant
+    public final int MAX_SCORES = 30;
+
     // model
     private Board board;
     private Ball ball;
@@ -63,10 +67,6 @@ public class GameView extends JFrame {
         //this.setVisible(true);
     }
 
-    public GameView(int width, int height) {
-        this(width, height, "Player 1", "Player2");
-    }
-
     public void play(){
         this.setVisible(true);
     }
@@ -80,6 +80,7 @@ public class GameView extends JFrame {
     public Player[] getPlayers(){
         return players;
     }
+    public boolean isHasWinner() { return players[0].getScores()>=MAX_SCORES || players[1].getScores()>=MAX_SCORES; }
 
     public CenterArea getCenterArea() { return centerArea; }
     public int getCanvasHeight(){ return canvasHeight; }
@@ -88,7 +89,7 @@ public class GameView extends JFrame {
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
-            if(players[0].getScores()>=30 || players[1].getScores()>=30)
+            if(isHasWinner())
                 showWinner(g);
             else
                 draw(g);
@@ -96,6 +97,7 @@ public class GameView extends JFrame {
     }
 
     public void showWinner(Graphics g){
+        // Show Winner
         String winner = "WINNER!";
         int scoreWinner;
         String playerWinner;
@@ -109,9 +111,7 @@ public class GameView extends JFrame {
         String showWinner = playerWinner + " : " + scoreWinner;
 
         // Board
-        g.setColor(board.getColorFilled());
-        g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
-        g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+        drawBoard(g);
 
         // Scores and Player name
         g.setColor(Color.DARK_GRAY);
@@ -121,14 +121,15 @@ public class GameView extends JFrame {
         g.drawString(showWinner,canvasWidth/2-showWinner.length()*75/2,260);
     }
 
-    public void draw(Graphics g) {
-
-        // Board
+    private void drawBoard(Graphics g){
+        int boardWidth = board.getMaxX() - board.getMinX() - 1;
+        int boardHeight = board.getMaxY() - board.getMinY() - 1;
         g.setColor(board.getColorFilled());
-        g.fillRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
-        g.drawRect(board.getMinX(), board.getMinY(), board.getMaxX() - board.getMinX() - 1, board.getMaxY() - board.getMinY() - 1);
+        g.fillRect(board.getMinX(), board.getMinY(), boardWidth, boardHeight);
+        g.drawRect(board.getMinX(), board.getMinY(), boardWidth, boardHeight);
+    }
 
-        // Scores and Player name
+    private void drawPlayerStatus(Graphics g){
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Impact", Font.PLAIN, 25));
         g.drawString(" " + players[0].getPlayerName(),50,40);
@@ -140,22 +141,35 @@ public class GameView extends JFrame {
         g.setFont(new Font("Arial", Font.PLAIN, 12));
         g.drawString("Elapsed 1 : " + players[0].getPaddle().getElapsedTime(),20,canvasHeight-70);
         g.drawString("Elapsed 2 : " + players[1].getPaddle().getElapsedTime(),20,canvasHeight-50);
+        g.drawString("Movement 1 : " + players[0].getPaddle().getY(),canvasWidth/2-150,canvasHeight-50);
+        g.drawString("Movement 2 : " + players[1].getPaddle().getY(),canvasWidth/2,canvasHeight-50);
+    }
 
+    private void drawBall(Graphics g){
         g.setColor(ball.getColor());
         g.fillOval((int)(ball.getX()-ball.getRadius()),(int)(ball.getY()-ball.getRadius()),(int)(2*ball.getRadius()),(int)(2*ball.getRadius()));
 
+        g.setColor(Color.DARK_GRAY);
+        g.setFont(new Font("Arial", Font.PLAIN, 12));
+        g.drawString("Ball speed : "+ball.getSpeed(),canvasWidth-150,canvasHeight-90);
+        g.drawString("Ball x : "+ball.getX(),canvasWidth-150,canvasHeight-70);
+        g.drawString("Ball y : "+ball.getY(),canvasWidth-150,canvasHeight-50);
+    }
+
+    private void drawPaddle(Graphics g){
         for(Player player : players){
             Paddle paddle = player.getPaddle();
             g.setColor(paddle.getColor());
             g.fillRect((int)(paddle.getX()-paddle.getWidth()/2),(int)(paddle.getY()-paddle.getLength()/2),(int)paddle.getWidth(),(int)paddle.getLength());
         }
+    }
 
+    private void drawCenterArea(Graphics g){
         for(int i = 0;i < 10;i++){
             for(int j = 0;j < 10;j++){
                 Cell cell = centerArea.getCell(i,j);
                 if (cell!=null) {
                     g.setColor(cell.getColor());
-
                     float minX, minY, brickLengthShow, brickWidthShow;
                     minX = canvasWidth / 2 - centerArea.getWidth() / 2 + cell.getCellWidth() * j + cell.getCellBorder();
                     minY = cell.getCellLength() * i + cell.getCellBorder();
@@ -165,5 +179,22 @@ public class GameView extends JFrame {
                 }
             }
         }
+    }
+
+    public void draw(Graphics g) {
+        // Board
+        drawBoard(g);
+
+        // Scores and Player name
+        drawPlayerStatus(g);
+
+        // Ball
+        drawBall(g);
+
+        // Paddle
+        drawPaddle(g);
+
+        // Center area
+        drawCenterArea(g);
     }
 }
