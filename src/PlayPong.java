@@ -4,7 +4,7 @@ import controllers.PlayerController;
 import views.GameView;
 import views.MenuView;
 
-public class Pong {
+public class PlayPong {
     public static void main(String[] args){
         // activate openGL on linux
         System.setProperty("sun.java2d.opengl", "true");
