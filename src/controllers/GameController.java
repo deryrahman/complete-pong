@@ -137,7 +137,7 @@ public class GameController implements Runnable, KeyListener {
         player1 = gameView.getPlayers()[0];
         player2 = gameView.getPlayers()[1];
         centerArea = gameView.getCenterArea();
-        isMakeScore = false;
+        isMakeScore = true;
         ballSpeed = ball.getSpeed();
         gameView.addKeyListener(this);
     }
@@ -308,6 +308,7 @@ public class GameController implements Runnable, KeyListener {
             t = new Thread(this);
             t.start();
         }
+        ball.setSpeedToZero();
     }
 
     /**
