@@ -1,13 +1,5 @@
 package models;
 
-/**
- * Player class as model for player in-game
- * Any information and object used by player
- * is provided and be responsible here
- * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
- * @version 1.0
- * @since 1.0
- */
 public class Player {
     /**
      * Paddle that player uses to play
@@ -30,7 +22,11 @@ public class Player {
      * @param playerName = player name
      */
     public Player(String playerName){
-        this.playerName = playerName;
+        try {
+            validateName(playerName);
+        } catch (InvalidNameFormatException e) {
+            System.out.println(e.getMessage());
+        }
         scores = 0;
     }
 
@@ -81,5 +77,18 @@ public class Player {
     public void add(Object o){
         if(o instanceof Paddle)
             paddle = (Paddle) o;
+    }
+
+    private void validateName(String name) throws InvalidNameFormatException{
+
+        if(name.length()==0)
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_ZERO_LENGTH);
+        if(name.length()>10)
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_MAXIMUM);
+        if (name.matches("[a-zA-Z]+")){
+            this.playerName = name;
+        } else {
+            throw new InvalidNameFormatException(InvalidNameFormatExceptionCode.S_NOT_STRING);
+        }
     }
 }
