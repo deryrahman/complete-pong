@@ -1,32 +1,76 @@
 package views;
 
-import com.sun.corba.se.impl.orbutil.graph.Graph;
 import models.Ball;
 import models.Board;
 import models.Paddle;
 import models.Player;
-import centerboard.*;
+import models.centerboard.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
+/**
+ * GameView Class as view class provide all graphics for pong game
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
+ */
 public class GameView extends JFrame {
     // Constant
+    /**
+     * define maximum score
+     */
     public final int MAX_SCORES = 30;
 
     // model
+    /**
+     * define game board (background)
+     */
     private Board board;
+
+    /**
+     * define ball
+     */
     private Ball ball;
+
+    /**
+     * define all players
+     */
     private Player[] players;
+
+    /**
+     * define center area
+     */
     private CenterArea centerArea;
 
+    /**
+     * define canvas for drawing
+     */
     private DrawCanvas canvas;
+
+    /**
+     * define canvas width
+     */
     private int canvasWidth;
+
+    /**
+     * define canvas height
+     */
     private int canvasHeight;
 
+    /**
+     * define the size of the window
+     */
     private Dimension WindowSize;
 
+    /**
+     * GameView Constructor, initialize all members
+     * @param width = canvas width
+     * @param height = canvas height
+     * @param player1 = player1 info
+     * @param player2 = player2 info
+     */
     public GameView(int width, int height, String player1, String player2){
         super("Complete Pong!");
         canvasWidth = width;
@@ -56,7 +100,7 @@ public class GameView extends JFrame {
         players[0].add(new Paddle(25,height/2,100));
         players[1] = new Player(player2);
         players[1].add(new Paddle(width-25,height/2,100));
-        centerArea = new CenterArea(200,400);
+        centerArea = new CenterArea(600,400);
 
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
@@ -67,25 +111,65 @@ public class GameView extends JFrame {
         //this.setVisible(true);
     }
 
+    /**
+     * start game, make all graphics visible
+     */
     public void play(){
         this.setVisible(true);
     }
 
+    /**
+     * get game ball
+     * @return game ball
+     */
     public Ball getBall(){
         return ball;
     }
+
+    /**
+     * get game board
+     * @return game board
+     */
     public Board getBoard(){
         return board;
     }
+
+    /**
+     * get all players
+     * @return all players in array
+     */
     public Player[] getPlayers(){
         return players;
     }
+
+    /**
+     * check if there's a winner of the game
+     * @return true if a player has reach maximum score
+     */
     public boolean isHasWinner() { return players[0].getScores()>=MAX_SCORES || players[1].getScores()>=MAX_SCORES; }
 
+    /**
+     * get center area
+     * @return center area
+     */
     public CenterArea getCenterArea() { return centerArea; }
+
+    /**
+     * get canvas height
+     * @return canvas height
+     */
     public int getCanvasHeight(){ return canvasHeight; }
+
+    /**
+     * get canvas width
+     * @return canvas width
+     */
     public int getCanvasWidth(){ return canvasWidth; }
 
+    /**
+     * DrawCanvas as special class to extends JPanel
+     * use to paint component on Graphics
+     */
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
@@ -96,6 +180,10 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * method to show the winner of the game
+     * @param g = graphic source
+     */
     public void showWinner(Graphics g){
         // Show Winner
         String winner = "WINNER!";
@@ -121,6 +209,10 @@ public class GameView extends JFrame {
         g.drawString(showWinner,canvasWidth/2-showWinner.length()*75/2,260);
     }
 
+    /**
+     * method for draw board
+     * @param g = graphic source
+     */
     private void drawBoard(Graphics g){
         int boardWidth = board.getMaxX() - board.getMinX() - 1;
         int boardHeight = board.getMaxY() - board.getMinY() - 1;
@@ -129,6 +221,10 @@ public class GameView extends JFrame {
         g.drawRect(board.getMinX(), board.getMinY(), boardWidth, boardHeight);
     }
 
+    /**
+     * method for draw all status of the player needed into display
+     * @param g = graphic source
+     */
     private void drawPlayerStatus(Graphics g){
         g.setColor(Color.DARK_GRAY);
         g.setFont(new Font("Impact", Font.PLAIN, 25));
@@ -145,6 +241,10 @@ public class GameView extends JFrame {
         g.drawString("Movement 2 : " + players[1].getPaddle().getY(),canvasWidth/2,canvasHeight-50);
     }
 
+    /**
+     * method for draw ball
+     * @param g = graphic source
+     */
     private void drawBall(Graphics g){
         g.setColor(ball.getColor());
         g.fillOval((int)(ball.getX()-ball.getRadius()),(int)(ball.getY()-ball.getRadius()),(int)(2*ball.getRadius()),(int)(2*ball.getRadius()));
@@ -156,6 +256,10 @@ public class GameView extends JFrame {
         g.drawString("Ball y : "+ball.getY(),canvasWidth-150,canvasHeight-50);
     }
 
+    /**
+     * method for draw paddle
+     * @param g = graphic source
+     */
     private void drawPaddle(Graphics g){
         for(Player player : players){
             Paddle paddle = player.getPaddle();
@@ -164,9 +268,13 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * method for draw object on center area
+     * @param g = graphic source
+     */
     private void drawCenterArea(Graphics g){
-        for(int i = 0;i < 10;i++){
-            for(int j = 0;j < 10;j++){
+        for(int i = 0;i < centerArea.getMatrixHeight();i++){
+            for(int j = 0;j < centerArea.getMatrixWidth();j++){
                 Cell cell = centerArea.getCell(i,j);
                 if (cell!=null) {
                     g.setColor(cell.getColor());
@@ -181,6 +289,10 @@ public class GameView extends JFrame {
         }
     }
 
+    /**
+     * combined method to draw all things needed for the game
+     * @param g = graphic source
+     */
     public void draw(Graphics g) {
         // Board
         drawBoard(g);

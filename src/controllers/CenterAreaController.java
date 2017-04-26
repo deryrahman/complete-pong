@@ -1,6 +1,7 @@
 package controllers;
 
-import centerboard.CenterArea;
+import models.Ball;
+import models.centerboard.CenterArea;
 import views.GameView;
 
 import java.util.Random;
@@ -29,11 +30,17 @@ public class CenterAreaController implements Runnable {
     private CenterArea centerArea;
 
     /**
+     * model ball
+     */
+    private Ball ball;
+
+    /**
      * CenterAreaController constructor, initialize center area
      * @param gameView source for center area
      */
     public CenterAreaController(GameView gameView){
         this.centerArea = gameView.getCenterArea();
+        ball = gameView.getBall();
     }
 
     /**
@@ -46,6 +53,13 @@ public class CenterAreaController implements Runnable {
     @Override
     public void run() {
         while(true){
+            while (ball.getSpeed()==0){
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             int type;
             Random rand = new Random();
             type = rand.nextInt(12);

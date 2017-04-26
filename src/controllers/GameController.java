@@ -3,7 +3,7 @@ package controllers;
 import models.Ball;
 import models.Board;
 import models.Player;
-import centerboard.*;
+import models.centerboard.*;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -183,19 +183,19 @@ public class GameController implements Runnable, KeyListener {
      */
     private void ballHitPaddle() {
         if(ball.getX()<minXPaddle1 && ball.getY()>minYPaddle1 && ball.getY()<maxYPaddle1){
+            float angle = (player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90;
             ball.reverseSpeedX();
             ball.setX(minXPaddle1);
-            ball.setSpeed(ball.getSpeed(),(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
-//            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
+            ball.setSpeed(ball.getSpeed(),angle);
             ball.setBelongsTo(0);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
+            float angle = (player2.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90;
             ball.reverseSpeedX();
             ball.setX(minXPaddle2);
-            ball.setSpeed(ball.getSpeed(),(player2.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
+            ball.setSpeed(ball.getSpeed(),angle);
             ball.reverseSpeedX();
-//            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
             ball.setBelongsTo(1);
         }
     }
@@ -206,8 +206,8 @@ public class GameController implements Runnable, KeyListener {
     private void ballHitBrick() {
         int brickMinX, brickMaxX;
         int brickMinY, brickMaxY;
-        for(int i = 0;i < 10;i++) {
-            for (int j = 0; j < 10; j++) {
+        for(int i = 0;i < centerArea.getMatrixHeight();i++) {
+            for (int j = 0; j < centerArea.getMatrixWidth(); j++) {
                 Cell cell = centerArea.getCell(i,j);
                 if(cell != null) {
                     brickMinY = (int) (cell.getCellLength()*i-ball.getRadius());

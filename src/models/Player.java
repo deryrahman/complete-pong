@@ -35,6 +35,7 @@ public class Player {
             validateName(playerName);
         } catch (InvalidNameFormatException e) {
             System.out.println(e.getMessage());
+            System.exit(0);
         }
         scores = 0;
     }
@@ -86,7 +87,7 @@ public class Player {
     /**
      * Validate name. Name must be in alphabetic and under 10 characters
      * @param name = name player
-     * @throws InvalidNameFormatException
+     * @throws InvalidNameFormatException = for exception
      */
     private void validateName(String name) throws InvalidNameFormatException{
 
