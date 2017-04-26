@@ -82,19 +82,54 @@ public class GameController implements Runnable, KeyListener {
      */
     private float ballSpeed;
 
+    /**
+     * boolean to check when the ball scored
+     */
     private boolean isMakeScore;
     // model
+    /**
+     * define player 1
+     */
     private Player player1;
+    /**
+     * define player 2
+     */
     private Player player2;
+    /**
+     * define ball used in-game
+     */
     private Ball ball;
+    /**
+     * define the board (background)
+     */
     private Board board;
+    /**
+     * define special area for powerups and bricks
+     */
     private CenterArea centerArea;
+    /**
+     * define bricks
+     */
     private Brick brickArea;
+    /**
+     * define ball power up
+     */
     private BallPowerUp ballPowerUp;
+    /**
+     * define paddle power up
+     */
     private PaddlePowerUp paddlePowerUp;
     // view
+    /**
+     * define the source from package view
+     */
     private GameView gameView;
 
+    /**
+     * Game controller constructor, initialize all members
+     * based on source
+     * @param gameView source from package view
+     */
     public GameController(GameView gameView){
         this.gameView = gameView;
         ball = gameView.getBall();
@@ -107,10 +142,16 @@ public class GameController implements Runnable, KeyListener {
         gameView.addKeyListener(this);
     }
 
+    /**
+     * repaint all objects
+     */
     public void updatePaint(){
         gameView.repaint();
     }
 
+    /**
+     * method that responsible to move the ball
+     */
     public void moveBall(){
         ball.updateMove();
         updateBoundary();
@@ -120,6 +161,9 @@ public class GameController implements Runnable, KeyListener {
         ballInGameBorder();
     }
 
+    /**
+     * method to keep the ball on the board
+     */
     private void ballInGameBorder() {
         if(ball.getX()<ballMinX){
             ball.reverseSpeedX();
@@ -146,6 +190,9 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * method for checking the ball whenever it hits a paddle
+     */
     private void ballHitPaddle() {
         if(ball.getX()<minXPaddle1 && ball.getY()>minYPaddle1 && ball.getY()<maxYPaddle1){
             ball.reverseSpeedX();
@@ -165,6 +212,9 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * method for checking the ball whenever it hits a brick or power up
+     */
     private void ballHitBrick() {
         int brickMinX, brickMaxX;
         int brickMinY, brickMaxY;
@@ -214,6 +264,9 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * update all attributes needed every movement occurs
+     */
     private void updateBoundary() {
         ballMinX = board.getMinX() + ball.getRadius();
         ballMinY = board.getMinY() + ball.getRadius();
@@ -227,6 +280,13 @@ public class GameController implements Runnable, KeyListener {
         maxYPaddle2 = player2.getPaddle().getY()+player2.getPaddle().getLength()/2+ball.getRadius();
     }
 
+    /**
+     * override run method fron runnable
+     * give sign to thread to run
+     * <p>
+     * responsible on every actions done all objects except player
+     * e.g. ball movement
+     */
     @Override
     public void run() {
         while(true){
@@ -240,6 +300,9 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * Constructor for thread and ask thread to start
+     */
     public void start(){
         if(t==null){
             t = new Thread(this);
@@ -247,11 +310,21 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * Override keyTyped method from runnable
+     * control actions when key typed
+     * @param keyEvent= key that being type
+     */
     @Override
     public void keyTyped(KeyEvent keyEvent) {
 
     }
 
+    /**
+     * Override keyPressed method from runnable
+     * control actions when key pressed
+     * @param keyEvent = key that being pressed
+     */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
         System.out.println(KeyEvent.VK_SPACE);
@@ -266,6 +339,11 @@ public class GameController implements Runnable, KeyListener {
         }
     }
 
+    /**
+     * Override keyPressed method from runnable
+     * control actions when key pressed
+     * @param keyEvent = key that being released
+     */
     @Override
     public void keyReleased(KeyEvent keyEvent) {
 

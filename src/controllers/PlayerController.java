@@ -25,13 +25,32 @@ public class PlayerController implements Runnable, KeyListener{
      * define player that's controlled
      */
     private Player player;
+
+    /**
+     * number of player as player identity
+     */
     private int playerNumber;
 
     /**
-     * information about canvas to limit paddle movement
+     * information about canvas height to limit paddle movement
      * based on canvas size
      */
     private int canvasHeight;
+
+    /**
+     * information about canvas width to limit paddle movement
+     * based on canvas size
+     */
+    private int canvasWidth;
+
+    /**
+     * Ball object used to knowing the last player hit by the ball
+     */
+    private Ball ball;
+
+    /**
+     * Thread used for multiprogramming with concurrency
+     */
     private Thread t;
 
     /**

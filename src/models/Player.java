@@ -74,6 +74,10 @@ public class Player {
         scores++;
     }
 
+    /**
+     * add a new object for player, used by paddle
+     * @param o = new object
+     */
     public void add(Object o){
         if(o instanceof Paddle)
             paddle = (Paddle) o;
