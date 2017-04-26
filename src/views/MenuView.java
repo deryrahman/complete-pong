@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 /**
  * MenuView class as view class provided all graphics for main menu
- * @author Irfan Ariq <13515112@std.stei.itb.ac.id>
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
  * @version 1.0
  * @since 1.0
  */
@@ -208,7 +208,10 @@ public class MenuView extends JFrame{
                 namaPlayerBot = playerName.getText();
 
                 if (namaPlayerBot.length() != 0) {
+                    String data = "Username " + playerName.getText();
+                    statusLabelBot.setText(data);
                     setVisible(false);
+                    //System.out.println(data);
                 }else {
                     String data = "Please insert player name";
                     statusLabelBot.setText(data);
@@ -268,6 +271,9 @@ public class MenuView extends JFrame{
                 namaPlayer2 = playerName2.getText();
 
                 if (namaPlayer1.length() != 0 && namaPlayer2.length() != 0) {
+                    String data = playerName1.getText();
+                    data += " Vs " + playerName2.getText();
+                    statusLabelMulti.setText(data);
                     setVisible(false);
                 }else {
                     String data = "Please insert player name";

@@ -1,10 +1,11 @@
 package views;
 
+import com.sun.corba.se.impl.orbutil.graph.Graph;
 import models.Ball;
 import models.Board;
 import models.Paddle;
 import models.Player;
-import models.centerboard.*;
+import centerboard.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,7 +101,7 @@ public class GameView extends JFrame {
         players[0].add(new Paddle(25,height/2,100));
         players[1] = new Player(player2);
         players[1].add(new Paddle(width-25,height/2,100));
-        centerArea = new CenterArea(600,400);
+        centerArea = new CenterArea(200,400);
 
         this.setLayout(new BorderLayout());
         this.setSize(canvasWidth,canvasHeight);
@@ -162,7 +163,7 @@ public class GameView extends JFrame {
 
     /**
      * get canvas width
-     * @return canvas width
+     * @return
      */
     public int getCanvasWidth(){ return canvasWidth; }
 
@@ -273,8 +274,8 @@ public class GameView extends JFrame {
      * @param g = graphic source
      */
     private void drawCenterArea(Graphics g){
-        for(int i = 0;i < centerArea.getMatrixHeight();i++){
-            for(int j = 0;j < centerArea.getMatrixWidth();j++){
+        for(int i = 0;i < 10;i++){
+            for(int j = 0;j < 10;j++){
                 Cell cell = centerArea.getCell(i,j);
                 if (cell!=null) {
                     g.setColor(cell.getColor());

@@ -12,7 +12,7 @@ public enum InvalidNameFormatExceptionCode implements ErrorCode {
     /**
      * define error message
      */
-    S_NOT_STRING("Name must be alphabet"),
+    S_NOT_STRING("Name must be alphabeth"),
     S_ZERO_LENGTH("Name must be filled"),
     S_MAXIMUM("Name length hit the maximum allowed");
 
