@@ -2,12 +2,8 @@ package controllers;
 
 import models.Ball;
 import models.Board;
-import models.Paddle;
 import models.Player;
-import spawnplugins.BallPowerUp;
-import spawnplugins.BrickArea;
-import spawnplugins.CenterArea;
-import spawnplugins.PaddlePowerUp;
+import centerboard.*;
 import views.GameView;
 
 import java.awt.event.KeyEvent;
@@ -37,7 +33,7 @@ public class GameController implements Runnable, KeyListener {
     private Ball ball;
     private Board board;
     private CenterArea centerArea;
-    private BrickArea brickArea;
+    private Brick brickArea;
     private BallPowerUp ballPowerUp;
     private PaddlePowerUp paddlePowerUp;
     // view
@@ -50,9 +46,6 @@ public class GameController implements Runnable, KeyListener {
         player1 = gameView.getPlayers()[0];
         player2 = gameView.getPlayers()[1];
         centerArea = gameView.getCenterArea();
-        brickArea = gameView.getBrickArea();
-        ballPowerUp = gameView.getBallPowerUp();
-        paddlePowerUp = gameView.getPaddlePowerUp();
         isMakeScore = false;
         ballSpeed = ball.getSpeed();
         gameView.addKeyListener(this);
@@ -77,14 +70,14 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player2.makeScore();
+            player2.makeScore(30);
             isMakeScore = true;
         } else if (ball.getX() > ballMaxX) {
             ball.reverseSpeedX();
             ball.setX(gameView.getWidth()/2);
             ball.setY(gameView.getHeight()/2);
             ball.setSpeedToZero();
-            player1.makeScore();
+            player1.makeScore(30);
             isMakeScore = true;
         }
 
@@ -103,6 +96,7 @@ public class GameController implements Runnable, KeyListener {
             ball.setX(minXPaddle1);
             ball.setSpeed(ball.getSpeed(),(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
 //            ball.setSpeedY(-(player1.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*10);
+            ball.setBelongsTo(0);
         }
 
         if(ball.getX()>minXPaddle2 && ball.getY()>minYPaddle2 && ball.getY()<maxYPaddle2){
@@ -111,6 +105,7 @@ public class GameController implements Runnable, KeyListener {
             ball.setSpeed(ball.getSpeed(),(player2.getPaddle().getY()-ball.getY())/player1.getPaddle().getLength()*90);
             ball.reverseSpeedX();
 //            ball.setSpeedY(-(player2.getPaddle().getY()-ball.getY())/player2.getPaddle().getLength()*10);
+            ball.setBelongsTo(1);
         }
     }
 
@@ -119,10 +114,12 @@ public class GameController implements Runnable, KeyListener {
         int brickMinY, brickMaxY;
         for(int i = 0;i < 10;i++) {
             for (int j = 0; j < 10; j++) {
-                if(centerArea.getBrick(i,j)) {
-                    brickMinY = (int) (centerArea.getBrickLength()*i-ball.getRadius()); brickMaxY = (int) (centerArea.getBrickLength()*(i+1)+ball.getRadius());
-                    brickMinX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+centerArea.getBrickWidth()*j-ball.getRadius());
-                    brickMaxX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+centerArea.getBrickWidth()*(j+1)+ball.getRadius());
+                Cell cell = centerArea.getCell(i,j);
+                if(cell != null) {
+                    brickMinY = (int) (cell.getCellLength()*i-ball.getRadius());
+                    brickMaxY = (int) (cell.getCellLength()*(i+1)+ball.getRadius());
+                    brickMinX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+cell.getCellWidth()*j-ball.getRadius());
+                    brickMaxX = (int) (gameView.getCanvasWidth()/2-centerArea.getWidth()/2+cell.getCellWidth()*(j+1)+ball.getRadius());
                     if(ball.getX()>brickMinX && ball.getX()<brickMaxX &&
                             ball.getY()>brickMinY && ball.getY()<brickMaxY) {
                         if(Math.abs(ball.getX()-brickMinX)<6) {
@@ -139,11 +136,22 @@ public class GameController implements Runnable, KeyListener {
                             if(ball.getSpeedY()<0)
                                 ball.reverseSpeedY();
                         }
-                        if(centerArea.getType(i,j) == 3) {
-                            Paddle pDummy = new Paddle(0,0,0);
-                            ballPowerUp.usePU(ball,pDummy);
+                        if(cell instanceof BallPowerUp) {
+                            ((BallPowerUp) cell).usePU(ball,null);
                         }
-                        centerArea.destroy(i,j);
+                        if(cell instanceof PaddlePowerUp){
+                            if(ball.getBelongsTo()==0)
+                                ((PaddlePowerUp) cell).usePU(null,player1.getPaddle());
+                            else if (ball.getBelongsTo()==1)
+                                ((PaddlePowerUp) cell).usePU(null,player2.getPaddle());
+                        }
+                        if(cell instanceof Brick){
+                            if(ball.getBelongsTo()==0)
+                                player1.makeScore();
+                            else if(ball.getBelongsTo()==1)
+                                player2.makeScore();
+                        }
+                        centerArea.destroyCell(i,j);
                     }
                 }
             }
@@ -194,8 +202,11 @@ public class GameController implements Runnable, KeyListener {
         if(keyEvent.getKeyCode() == KeyEvent.VK_SPACE && isMakeScore){
             Random rand = new Random();
             int randomAngle = rand.nextInt(360);
+            while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
+                randomAngle-=45;
             ball.setSpeed(ballSpeed,randomAngle);
             isMakeScore=false;
+            ball.setBelongsTo(-1);
         }
     }
 

@@ -1,9 +1,6 @@
 package controllers;
 
-import spawnplugins.BallPowerUp;
-import spawnplugins.BrickArea;
-import spawnplugins.CenterArea;
-import spawnplugins.PaddlePowerUp;
+import centerboard.CenterArea;
 import views.GameView;
 
 import java.util.Random;
@@ -15,15 +12,9 @@ public class CenterAreaController implements Runnable {
     private static final int UPDATE_RATE = 100;
     private Thread t;
     private CenterArea centerArea;
-    private BrickArea brickArea;
-    private BallPowerUp ballPowerUp;
-    private PaddlePowerUp paddlePowerUp;
 
     public CenterAreaController(GameView gameView){
         this.centerArea = gameView.getCenterArea();
-        this.brickArea = gameView.getBrickArea();
-        this.ballPowerUp = gameView.getBallPowerUp();
-        this.paddlePowerUp = gameView.getPaddlePowerUp();
     }
 
     @Override
@@ -31,16 +22,14 @@ public class CenterAreaController implements Runnable {
         while(true){
             int type;
             Random rand = new Random();
-            type = rand.nextInt(10);
-            if (type == 0) {
-                ballPowerUp.spawn();
-            } else if (type == 1) {
-                paddlePowerUp.spawn();
-            } else {
-                brickArea.spawn();
-            }
+            type = rand.nextInt(12);
+            if(type>3 || type==0){
+                centerArea.setRandomCell(1);
+            } else
+                centerArea.setRandomCell(type);
+
             try {
-                Thread.sleep(100000 / UPDATE_RATE);
+                Thread.sleep(200000 / UPDATE_RATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
