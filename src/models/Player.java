@@ -86,7 +86,7 @@ public class Player {
     /**
      * Validate name. Name must be in alphabetic and under 10 characters
      * @param name = name player
-     * @throws InvalidNameFormatException
+     * @throws InvalidNameFormatException = for exception
      */
     private void validateName(String name) throws InvalidNameFormatException{
 

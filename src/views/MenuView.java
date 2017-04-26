@@ -6,39 +6,129 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by irfan on 26/04/17.
+ * MenuView class as view class provided all graphics for main menu
+ * @author Dery Rahman Ahaddienata <13515097@std.stei.itb.ac.id>
+ * @version 1.0
+ * @since 1.0
  */
 public class MenuView extends JFrame{
+    /**
+     * horizontal size for main menu
+     */
     private int sizeX;
+
+    /**
+     * vertical size for main menu
+     */
     private int sizeY;
+
+    /**
+     * half from horizontal size
+     */
     private int halfSizeX;
 
+    /**
+     * splitted panel
+     */
     private JSplitPane splitPaneH;
+
+    /**
+     * draw panel 1
+     */
     private DrawCanvas panel1;
+
+    /**
+     * draw panel 2
+     */
     private DrawCanvas panel2;
 
+    /**
+     * player 1 name
+     */
     private String namaPlayer1;
+
+    /**
+     * player 2 name
+     */
     private String namaPlayer2;
+
+    /**
+     * bot name
+     */
     private String namaPlayerBot;
 
     //panel2
+    /**
+     * label header for panel 2 (play with friend)
+     */
     private JLabel headerLabelMulti;
+
+    /**
+     * text field for player 1 name
+     */
     private JTextField playerName1;
+
+    /**
+     * text field for player 2 name
+     */
     private JTextField playerName2;
+
+    /**
+     * label for player 1
+     */
     private JLabel playerLabel1;
+
+    /**
+     * label for player 2
+     */
     private JLabel playerLabel2;
+
+    /**
+     * play button
+     */
     private JButton playMultiButton;
+
+    /**
+     * define label status
+     */
     private JLabel statusLabelMulti;
 
     //panel1
+    /**
+     * label header for panel 1 (play with bot)
+     */
     private JLabel headerLabelBot;
+
+    /**
+     * player name
+     */
     private JTextField playerName;
+
+    /**
+     * player label
+     */
     private JLabel playerLabel;
+
+    /**
+     * play button
+     */
     private JButton playBotButton;
+
+    /**
+     * define label status
+     */
     private JLabel statusLabelBot;
 
+    /**
+     * define windows dimension
+     */
     private Dimension windowSize;
 
+    /**
+     * MenuView Constructor, initialize all members
+     * @param x = horizontal size
+     * @param y = vertical size
+     */
     public MenuView(int x, int y){
         sizeX = x;
         sizeY = y;
@@ -83,10 +173,16 @@ public class MenuView extends JFrame{
         this.pack();
     }
 
+    /**
+     * set all graphics visible
+     */
     public void view() {
         this.setVisible( true );
     }
 
+    /**
+     * method for make panel 1
+     */
     public void createPanel1(){
         panel1 = new DrawCanvas();
         panel1.setLayout( new GridLayout(4,1) );
@@ -137,6 +233,9 @@ public class MenuView extends JFrame{
         panel1.add(statusBot, BorderLayout.SOUTH);
     }
 
+    /**
+     * method for make panel 2
+     */
     public void createPanel2(){
         panel2 = new DrawCanvas();
         panel2.setLayout( new GridLayout(6,1) );
@@ -201,6 +300,10 @@ public class MenuView extends JFrame{
         panel2.add(statusMulti, BorderLayout.SOUTH);
     }
 
+    /**
+     * DrawCanvas as special class to extends JPanel
+     * use to paint component on Graphics
+     */
     class DrawCanvas extends JPanel{
         public void paintComponent(Graphics g){
             super.paintComponent(g);
@@ -208,24 +311,44 @@ public class MenuView extends JFrame{
         }
     }
 
+    /**
+     * draw all aspects of Main Menu
+     * @param g = graphic source
+     */
     public void draw(Graphics g) {
         g.setColor(Color.BLACK);
         g.fillRect(0,0,sizeX, sizeY);
         g.drawRect(0,0,sizeX, sizeY);
     }
 
+    /**
+     * get player 1 name
+     * @return player 1 name
+     */
     public String getPlayer1() {
         return namaPlayer1;
     }
 
+    /**
+     * get player 2 name
+     * @return  player 2 name
+     */
     public String getPlayer2() {
         return namaPlayer2;
     }
 
+    /**
+     * get bot name
+     * @return bot name
+     */
     public String getPlayerBot() {
         return namaPlayerBot;
     }
 
+    /**
+     * Start main menu. First appear on program
+     * @param args = arguments
+     */
     public static void main( String args[] ){
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
