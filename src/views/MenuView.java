@@ -17,6 +17,10 @@ public class MenuView extends JFrame{
     private DrawCanvas panel1;
     private DrawCanvas panel2;
 
+    private String namaPlayer1;
+    private String namaPlayer2;
+    private String namaPlayerBot;
+
     //panel2
     private JLabel headerLabelMulti;
     private JTextField playerName1;
@@ -48,6 +52,10 @@ public class MenuView extends JFrame{
 
         windowSize = new Dimension(sizeX, sizeY);
         Dimension screensize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
+
+        namaPlayer1 = "";
+        namaPlayer2 = "";
+        namaPlayerBot = "";
 
         JPanel topPanel = new JPanel();
         topPanel.setLayout( new BorderLayout() );
@@ -101,9 +109,17 @@ public class MenuView extends JFrame{
         playBotButton.setForeground(Color.WHITE);
         playBotButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String data = "Username " + playerName.getText();
-                statusLabelBot.setText(data);
-                System.out.println(data);
+                namaPlayerBot = playerName.getText();
+
+                if (namaPlayerBot.length() != 0) {
+                    String data = "Username " + playerName.getText();
+                    statusLabelBot.setText(data);
+                    setVisible(false);
+                    //System.out.println(data);
+                }else {
+                    String data = "Please insert player name";
+                    statusLabelBot.setText(data);
+                }
             }
         });
         statusLabelBot = new JLabel("");
@@ -152,9 +168,18 @@ public class MenuView extends JFrame{
         playMultiButton.setForeground(Color.WHITE);
         playMultiButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                String data = playerName1.getText();
-                data += " Vs " + playerName2.getText();
-                statusLabelMulti.setText(data);
+                namaPlayer1 = playerName1.getText();
+                namaPlayer2 = playerName2.getText();
+
+                if (namaPlayer1.length() != 0 && namaPlayer2.length() != 0) {
+                    String data = playerName1.getText();
+                    data += " Vs " + playerName2.getText();
+                    statusLabelMulti.setText(data);
+                    setVisible(false);
+                }else {
+                    String data = "Please insert player name";
+                    statusLabelMulti.setText(data);
+                }
             }
         });
         statusLabelMulti = new JLabel("");
@@ -190,15 +215,15 @@ public class MenuView extends JFrame{
     }
 
     public String getPlayer1() {
-        return playerName1.getText();
+        return namaPlayer1;
     }
 
     public String getPlayer2() {
-        return playerName2.getText();
+        return namaPlayer2;
     }
 
     public String getPlayerBot() {
-        return playerName.getText();
+        return namaPlayerBot;
     }
 
     public static void main( String args[] ){
@@ -206,9 +231,9 @@ public class MenuView extends JFrame{
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception evt) {}
         // Create an instance of the test application
-        MenuView mainFrame = new MenuView(1200,400);
-        mainFrame.view();
-        System.out.println(mainFrame.getPlayer1());
+        //MenuView mainFrame = new MenuView(1200,400);
+        //mainFrame.view();
+        //System.out.println(mainFrame.getPlayer1());
         //System.out.println("selesai");
     }
 
