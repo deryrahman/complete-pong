@@ -88,7 +88,6 @@ public class GameView extends JFrame {
         // Get random angle
         Random rand = new Random();
         int randomAngle = rand.nextInt(360);
-        System.out.println(randomAngle);
         while ((randomAngle>45 && randomAngle<135) || (randomAngle>225 && randomAngle<315))
             randomAngle-=45;
 

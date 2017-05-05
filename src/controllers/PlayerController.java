@@ -153,7 +153,6 @@ public class PlayerController implements Runnable, KeyListener{
      */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-//        System.out.println(keyEvent.getKeyCode());
         if(playerNumber==0){
             switch (keyEvent.getKeyCode()){
                 case KeyEvent.VK_W:

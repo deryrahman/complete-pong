@@ -57,8 +57,13 @@ public class PlayPong {
         mainFrame.view();
 
         // Wait until mainFrame not visible
+        boolean isFirst = true;
         while(mainFrame.isVisible()) {
-            System.out.println("Waiting player name");
+            if(isFirst) {
+                System.out.println("Waiting player name");
+                isFirst = false;
+            }
+            System.out.print("");
         }
 
         // get names for all players

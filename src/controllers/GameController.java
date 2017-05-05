@@ -318,7 +318,6 @@ public class GameController implements Runnable, KeyListener {
      */
     @Override
     public void keyPressed(KeyEvent keyEvent) {
-        System.out.println(KeyEvent.VK_SPACE);
         if(keyEvent.getKeyCode() == KeyEvent.VK_SPACE && isMakeScore){
             Random rand = new Random();
             int randomAngle = rand.nextInt(360);
